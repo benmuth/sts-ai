@@ -10,6 +10,7 @@
 #include "sim/search/GameAction.h"
 
 namespace sts::search {
+    void myGetBestCardToPlay();
 
     struct SimpleAgent {
 

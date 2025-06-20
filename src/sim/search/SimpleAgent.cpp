@@ -2,15 +2,26 @@
 // Created by keega on 9/27/2021.
 //
 
+#include <algorithm>
 #include <sim/search/SimpleAgent.h>
 #include <game/Game.h>
+#include "combat/BattleContext.h"
+#include "combat/CardInstance.h"
+#include "constants/CharacterClasses.h"
+#include "constants/MonsterEncounters.h"
+#include "game/Card.h"
+#include "game/GameContext.h"
+#include "sim/BattleSimulator.h"
 #include "sim/PrintHelpers.h"
+#include "sim/search/Action.h"
+
 
 #include <map>
 #include <array>
 #include <bitset>
 #include <thread>
 #include <mutex>
+#include <vector>
 
 using namespace sts;
 
@@ -71,6 +82,74 @@ int getBestCardToPlay(const BattleContext &bc, fixed_list<int,10> handIdxs) {
         }
     }
     return bestHandIdx;
+}
+
+typedef struct {
+    BattleContext bc;
+    CardInstance card;
+
+} State;
+
+void search::myGetBestCardToPlay() {
+    GameContext gc = GameContext(CharacterClass::IRONCLAD, 0, 0);
+
+    BattleContext bc;
+    bc.init(gc, MonsterEncounter::JAW_WORM);
+
+    int seed_sample_count = 10;
+
+    // enumerate actions
+    std::deque<State> states;
+    for (int i = 0; i < std::size(bc.cards.hand); ++i) {
+        if (bc.cards.hand[i].id == CardId::INVALID) break;
+        auto new_bc = bc;
+        // auto action = search::Action(sts::search::ActionType::CARD, i);
+
+        State state = {new_bc, bc.cards.hand[i]};
+        states.push_front(state);
+    }
+    // sort actions by heuristic
+
+    for (int i = 0; i < seed_sample_count; ++i) {
+
+        // start dfs with first action
+        while (!states.empty()) {
+            auto state = states.front();
+            states.pop_front();
+
+            std::cout << "state: " << (state.card.getName()) << "\n";
+            std::cout << "hand: ";
+            bool first = true;
+            for (const auto& element : state.bc.cards.hand) {
+                if (!first) std::cout << ", ";
+                std::cout << element;
+                first = false;
+            }
+            std::cout << "\n";
+            // execute action
+            if (!state.card.requiresTarget()) {
+                auto *bestCard = std::find(std::begin(state.bc.cards.hand), std::end(state.bc.cards.hand), &state.card);
+                auto bestCardIdx = std::distance(std::begin(state.bc.cards.hand), bestCard);
+
+                auto action = search::Action(sts::search::ActionType::CARD, bestCardIdx);
+                action.execute(state.bc);
+            }
+
+            // push new states
+            for (int i = 0; i < std::size(state.bc.cards.hand); ++i) {
+                if (state.bc.cards.hand[i].id == CardId::INVALID) break;
+                auto new_bc = state.bc;
+                // auto action = search::Action(sts::search::ActionType::CARD, i);
+
+                State state = {new_bc, state.bc.cards.hand[i]};
+                states.push_front(state);
+            }
+
+            // eval action
+        }
+    }
+
+    // __dfs__ (with pruning)
 }
 
 void sortCardOptions(const GameContext &gc, fixed_list<int,96> &sortedCardIdxs) {

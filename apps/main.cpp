@@ -7,20 +7,22 @@
 #include "game/Neow.h"
 #include "combat/BattleContext.h"
 #include "sim/ConsoleSimulator.h"
+#include "sim/search/SimpleAgent.h"
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"
 using namespace sts;
 
 int main() {
-    while (!std::cin.eof()) {
-        std::cout << "usage: seed character(I/S/D/W) ascensionLevel" << std::endl;
+    // while (!std::cin.eof()) {
+    //     std::cout << "usage: seed character(I/S/D/W) ascensionLevel" << std::endl;
 
-        SimulatorContext simCtx;
-        ConsoleSimulator simulator;
-        simulator.play(std::cin, std::cout, simCtx);
-    }
+    //     SimulatorContext simCtx;
+    //     ConsoleSimulator simulator;
+    //     simulator.play(std::cin, std::cout, simCtx);
+    // }
 
+    sts::search::myGetBestCardToPlay();
     return 0;
 }
 

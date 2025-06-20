@@ -78,6 +78,10 @@ namespace sts {
 
         [[nodiscard]] bool canUseOnAnyTarget(const BattleContext &bc) const; // not for use in critical path
         [[nodiscard]] bool canUse(const BattleContext &bc, int target, bool inAutoplay) const;
+
+        bool operator==(const CardInstance *rhs) {
+            return id == rhs->id;
+        }
     };
 
     std::ostream& operator <<(std::ostream &os, const CardInstance &c);

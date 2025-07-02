@@ -14,15 +14,15 @@
 using namespace sts;
 
 int main() {
-    // while (!std::cin.eof()) {
-    //     std::cout << "usage: seed character(I/S/D/W) ascensionLevel" << std::endl;
+    while (!std::cin.eof()) {
+        std::cout << "enter the following on a line: seed character(I/S/D/W) ascensionLevel" << std::endl;
 
-    //     SimulatorContext simCtx;
-    //     ConsoleSimulator simulator;
-    //     simulator.play(std::cin, std::cout, simCtx);
-    // }
+        SimulatorContext simCtx;
+        ConsoleSimulator simulator;
+        simulator.play(std::cin, std::cout, simCtx);
+    }
 
-    sts::search::myGetBestCardToPlay();
+    // sts::search::myGetBestCardToPlay();
     return 0;
 }
 

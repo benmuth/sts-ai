@@ -1,0 +1,31 @@
+{
+  "name": "jaw-worm",
+  "description": "A fight from the start against a basic jaw-worm",
+  "seed": 12345,
+  "ascension": 0,
+  "floor": 1,
+  "initial_state": {
+    "player_hp": 80,
+    "player_max_hp": 80,
+    "character_class": "IRONCLAD",
+    "encounter": "JAW_WORM",
+    "deck": [
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "DEFEND",
+      "DEFEND",
+      "DEFEND",
+      "DEFEND",
+      "BASH"
+    ],
+    "relics": [],
+    "potions": []
+  },
+  "action_sequence": [
+    "play_card_0",
+    "end_turn"
+  ]
+}

@@ -1,0 +1,164 @@
+# STS-AI Justfile - Common project commands
+# Usage: just <command>
+
+# Default recipe that displays available commands
+default:
+    @just --list
+
+# Build configuration
+BUILD_DIR := "build"
+TEST_BUILD_DIR := "tests/build"
+
+# === Build Commands ===
+
+# Build the main project (creates main, test, and small-test executables)
+build:
+    mkdir -p {{BUILD_DIR}}
+    cd {{BUILD_DIR}} && cmake .. && make
+
+# Clean and rebuild everything
+rebuild: clean build
+
+# Clean build artifacts
+clean:
+    rm -rf {{BUILD_DIR}}
+    rm -rf {{TEST_BUILD_DIR}}
+
+# Build optimized release version
+build-release:
+    mkdir -p {{BUILD_DIR}}
+    cd {{BUILD_DIR}} && cmake -DCMAKE_BUILD_TYPE=Release .. && make
+
+# Build debug version with debug symbols
+build-debug:
+    mkdir -p {{BUILD_DIR}}
+    cd {{BUILD_DIR}} && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-g -O0" .. && make
+
+# === Test Commands ===
+
+# Build test infrastructure (snapshot generator)
+build-tests:
+    mkdir -p {{TEST_BUILD_DIR}}
+    cd {{TEST_BUILD_DIR}} && cmake .. && make
+
+# Run the main test suite (requires arguments)
+test *ARGS:
+    just build
+    ./{{BUILD_DIR}}/test {{ARGS}}
+
+# Run small test executable
+test-small:
+    just build
+    ./{{BUILD_DIR}}/small-test
+
+# Run multi-threaded agent test (threads, depth, ascension, seed, count, print)
+test-agent threads depth ascension seed count print="true":
+    just build
+    ./{{BUILD_DIR}}/test agent_mt {{threads}} {{depth}} {{ascension}} {{seed}} {{count}} {{print}}
+
+# Run simple agent test (threads, seed, count, print)
+test-simple-agent threads seed count print="true":
+    just build
+    ./{{BUILD_DIR}}/test simple_agent_mt {{threads}} {{seed}} {{count}} {{print}}
+
+# Run MCTS test from save file
+test-mcts savefile simulations:
+    just build
+    ./{{BUILD_DIR}}/test mcts_save {{savefile}} {{simulations}}
+
+# Generate combat snapshot for testing
+snapshot scenario output:
+    just build-tests
+    ./{{TEST_BUILD_DIR}}/snapshot_generator {{scenario}} {{output}}
+
+# Generate basic combat snapshot
+snapshot-basic:
+    just build-tests
+    mkdir -p tests/snapshots/basic_combat
+    ./{{TEST_BUILD_DIR}}/snapshot_generator tests/scenarios/basic_strike_combat.json tests/snapshots/basic_combat/basic_strike_combat.snap
+
+# Test snapshot determinism (run multiple times and compare)
+test-determinism:
+    just build-tests
+    mkdir -p tests/snapshots/determinism
+    ./{{TEST_BUILD_DIR}}/snapshot_generator tests/scenarios/basic_strike_combat.json tests/snapshots/determinism/run1.snap
+    ./{{TEST_BUILD_DIR}}/snapshot_generator tests/scenarios/basic_strike_combat.json tests/snapshots/determinism/run2.snap
+    ./{{TEST_BUILD_DIR}}/snapshot_generator tests/scenarios/basic_strike_combat.json tests/snapshots/determinism/run3.snap
+    diff tests/snapshots/determinism/run1.snap tests/snapshots/determinism/run2.snap
+    diff tests/snapshots/determinism/run2.snap tests/snapshots/determinism/run3.snap
+    @echo "✓ Snapshots are deterministic!"
+
+# === Run Commands ===
+
+# Run the main interactive simulator
+run:
+    just build
+    ./{{BUILD_DIR}}/main
+
+# Run simulator with save file replay
+run-save savefile actionfile:
+    just build
+    ./{{BUILD_DIR}}/test save {{savefile}} {{actionfile}}
+
+# Run replay from seed and ascension
+run-replay seed ascension actionfile:
+    just build
+    ./{{BUILD_DIR}}/test replay {{seed}} {{ascension}} {{actionfile}}
+
+# === Development Commands ===
+
+# Check project structure and files
+check:
+    @echo "Project structure:"
+    @find . -name "*.cpp" -o -name "*.h" | head -20
+    @echo "\nBuild files:"
+    @ls -la {{BUILD_DIR}} 2>/dev/null || echo "Build directory not found"
+    @echo "\nTest files:"
+    @ls -la {{TEST_BUILD_DIR}} 2>/dev/null || echo "Test build directory not found"
+
+# Show project statistics
+stats:
+    @echo "Lines of code:"
+    @find src include -name "*.cpp" -o -name "*.h" | xargs wc -l | tail -1
+    @echo "\nFile counts:"
+    @echo "Headers: $(find include -name "*.h" | wc -l)"
+    @echo "Sources: $(find src -name "*.cpp" | wc -l)"
+    @echo "Apps: $(find apps -name "*.cpp" | wc -l)"
+
+# Format code (if clang-format is available)
+format:
+    find src include apps tests/utils -name "*.cpp" -o -name "*.h" | xargs clang-format -i
+
+# === Utility Commands ===
+
+# Show available test commands
+test-help:
+    just build
+    @echo "Available test commands:"
+    @echo "  agent_mt <threads> <depth> <ascension> <seed> <count> <print>"
+    @echo "  simple_agent_mt <threads> <seed> <count> [print]"
+    @echo "  mcts_save <savefile> <simulations>"
+    @echo "  save <savefile> <actionfile>"
+    @echo "  replay <seed> <ascension> <actionfile>"
+
+# Clean all build artifacts and temporary files
+clean-all: clean
+    find . -name "*.o" -delete
+    find . -name "*.a" -delete
+    find . -name "core" -delete
+    rm -f tests/snapshots/determinism/*.snap
+
+# Create a new combat scenario template
+new-scenario name:
+    @echo '{\n    "name": "{{name}}",\n    "description": "Description here",\n    "seed": 12345,\n    "ascension": 0,\n    "floor": 1,\n    "initial_state": {\n        "player_hp": 80,\n        "player_max_hp": 80,\n        "character_class": "IRONCLAD",\n        "encounter": "CULTIST",\n        "deck": ["STRIKE", "STRIKE", "STRIKE", "STRIKE", "STRIKE", "DEFEND", "DEFEND", "DEFEND", "DEFEND", "BASH"],\n        "relics": [],\n        "potions": []\n    },\n    "action_sequence": ["play_card_0", "end_turn"]\n}' > tests/scenarios/{{name}}.json
+    @echo "Created tests/scenarios/{{name}}.json"
+
+# Example recipes for common development workflows
+example-workflow:
+    @echo "Example development workflow:"
+    @echo "1. just clean-all    # Clean everything"
+    @echo "2. just build        # Build main project"
+    @echo "3. just build-tests  # Build test infrastructure"
+    @echo "4. just snapshot-basic # Generate basic snapshot"
+    @echo "5. just test-determinism # Verify determinism"
+    @echo "6. just run          # Run interactive simulator"

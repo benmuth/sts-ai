@@ -1,0 +1,542 @@
+[
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/apps/main.cpp.o -c /Users/ben/code/sts-ai/apps/main.cpp",
+  "file": "/Users/ben/code/sts-ai/apps/main.cpp",
+  "output": "CMakeFiles/main.dir/apps/main.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/Actions.cpp.o -c /Users/ben/code/sts-ai/src/combat/Actions.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Actions.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/Actions.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/BattleContext.cpp.o -c /Users/ben/code/sts-ai/src/combat/BattleContext.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/BattleContext.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/BattleContext.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/CardInstance.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardInstance.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardInstance.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/CardInstance.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/CardManager.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardManager.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardManager.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/CardManager.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/CardQueue.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardQueue.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardQueue.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/CardQueue.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/Monster.cpp.o -c /Users/ben/code/sts-ai/src/combat/Monster.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Monster.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/Monster.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/MonsterGroup.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterGroup.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterGroup.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/MonsterGroup.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/MonsterMoveDamage.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterMoveDamage.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterMoveDamage.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/MonsterMoveDamage.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/MonsterSpecific.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterSpecific.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterSpecific.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/MonsterSpecific.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/combat/Player.cpp.o -c /Users/ben/code/sts-ai/src/combat/Player.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Player.cpp",
+  "output": "CMakeFiles/main.dir/src/combat/Player.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/Card.cpp.o -c /Users/ben/code/sts-ai/src/game/Card.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Card.cpp",
+  "output": "CMakeFiles/main.dir/src/game/Card.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/CombatReward.cpp.o -c /Users/ben/code/sts-ai/src/game/CombatReward.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/CombatReward.cpp",
+  "output": "CMakeFiles/main.dir/src/game/CombatReward.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/Deck.cpp.o -c /Users/ben/code/sts-ai/src/game/Deck.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Deck.cpp",
+  "output": "CMakeFiles/main.dir/src/game/Deck.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/Game.cpp.o -c /Users/ben/code/sts-ai/src/game/Game.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Game.cpp",
+  "output": "CMakeFiles/main.dir/src/game/Game.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/GameContext.cpp.o -c /Users/ben/code/sts-ai/src/game/GameContext.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/GameContext.cpp",
+  "output": "CMakeFiles/main.dir/src/game/GameContext.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/Map.cpp.o -c /Users/ben/code/sts-ai/src/game/Map.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Map.cpp",
+  "output": "CMakeFiles/main.dir/src/game/Map.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/Neow.cpp.o -c /Users/ben/code/sts-ai/src/game/Neow.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Neow.cpp",
+  "output": "CMakeFiles/main.dir/src/game/Neow.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/SaveFile.cpp.o -c /Users/ben/code/sts-ai/src/game/SaveFile.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/SaveFile.cpp",
+  "output": "CMakeFiles/main.dir/src/game/SaveFile.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/game/Shop.cpp.o -c /Users/ben/code/sts-ai/src/game/Shop.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Shop.cpp",
+  "output": "CMakeFiles/main.dir/src/game/Shop.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/BattleSimulator.cpp.o -c /Users/ben/code/sts-ai/src/sim/BattleSimulator.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/BattleSimulator.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/BattleSimulator.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/ConsoleSimulator.cpp.o -c /Users/ben/code/sts-ai/src/sim/ConsoleSimulator.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/ConsoleSimulator.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/ConsoleSimulator.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/PrintHelpers.cpp.o -c /Users/ben/code/sts-ai/src/sim/PrintHelpers.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/PrintHelpers.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/PrintHelpers.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/SimHelpers.cpp.o -c /Users/ben/code/sts-ai/src/sim/SimHelpers.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/SimHelpers.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/SimHelpers.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/search/Action.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/Action.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/Action.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/search/Action.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/search/BattleScumSearcher2.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/BattleScumSearcher2.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/BattleScumSearcher2.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/search/BattleScumSearcher2.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/search/ExpertKnowledge.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/ExpertKnowledge.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/ExpertKnowledge.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/search/ExpertKnowledge.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/search/GameAction.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/GameAction.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/GameAction.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/search/GameAction.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/search/ScumSearchAgent2.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/ScumSearchAgent2.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/ScumSearchAgent2.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/search/ScumSearchAgent2.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/main.dir/src/sim/search/SimpleAgent.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/SimpleAgent.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/SimpleAgent.cpp",
+  "output": "CMakeFiles/main.dir/src/sim/search/SimpleAgent.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/apps/test.cpp.o -c /Users/ben/code/sts-ai/apps/test.cpp",
+  "file": "/Users/ben/code/sts-ai/apps/test.cpp",
+  "output": "CMakeFiles/test.dir/apps/test.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/Actions.cpp.o -c /Users/ben/code/sts-ai/src/combat/Actions.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Actions.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/Actions.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/BattleContext.cpp.o -c /Users/ben/code/sts-ai/src/combat/BattleContext.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/BattleContext.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/BattleContext.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/CardInstance.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardInstance.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardInstance.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/CardInstance.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/CardManager.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardManager.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardManager.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/CardManager.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/CardQueue.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardQueue.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardQueue.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/CardQueue.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/Monster.cpp.o -c /Users/ben/code/sts-ai/src/combat/Monster.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Monster.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/Monster.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/MonsterGroup.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterGroup.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterGroup.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/MonsterGroup.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/MonsterMoveDamage.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterMoveDamage.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterMoveDamage.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/MonsterMoveDamage.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/MonsterSpecific.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterSpecific.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterSpecific.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/MonsterSpecific.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/combat/Player.cpp.o -c /Users/ben/code/sts-ai/src/combat/Player.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Player.cpp",
+  "output": "CMakeFiles/test.dir/src/combat/Player.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/Card.cpp.o -c /Users/ben/code/sts-ai/src/game/Card.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Card.cpp",
+  "output": "CMakeFiles/test.dir/src/game/Card.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/CombatReward.cpp.o -c /Users/ben/code/sts-ai/src/game/CombatReward.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/CombatReward.cpp",
+  "output": "CMakeFiles/test.dir/src/game/CombatReward.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/Deck.cpp.o -c /Users/ben/code/sts-ai/src/game/Deck.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Deck.cpp",
+  "output": "CMakeFiles/test.dir/src/game/Deck.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/Game.cpp.o -c /Users/ben/code/sts-ai/src/game/Game.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Game.cpp",
+  "output": "CMakeFiles/test.dir/src/game/Game.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/GameContext.cpp.o -c /Users/ben/code/sts-ai/src/game/GameContext.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/GameContext.cpp",
+  "output": "CMakeFiles/test.dir/src/game/GameContext.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/Map.cpp.o -c /Users/ben/code/sts-ai/src/game/Map.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Map.cpp",
+  "output": "CMakeFiles/test.dir/src/game/Map.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/Neow.cpp.o -c /Users/ben/code/sts-ai/src/game/Neow.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Neow.cpp",
+  "output": "CMakeFiles/test.dir/src/game/Neow.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/SaveFile.cpp.o -c /Users/ben/code/sts-ai/src/game/SaveFile.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/SaveFile.cpp",
+  "output": "CMakeFiles/test.dir/src/game/SaveFile.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/game/Shop.cpp.o -c /Users/ben/code/sts-ai/src/game/Shop.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Shop.cpp",
+  "output": "CMakeFiles/test.dir/src/game/Shop.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/BattleSimulator.cpp.o -c /Users/ben/code/sts-ai/src/sim/BattleSimulator.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/BattleSimulator.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/BattleSimulator.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/ConsoleSimulator.cpp.o -c /Users/ben/code/sts-ai/src/sim/ConsoleSimulator.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/ConsoleSimulator.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/ConsoleSimulator.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/PrintHelpers.cpp.o -c /Users/ben/code/sts-ai/src/sim/PrintHelpers.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/PrintHelpers.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/PrintHelpers.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/SimHelpers.cpp.o -c /Users/ben/code/sts-ai/src/sim/SimHelpers.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/SimHelpers.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/SimHelpers.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/search/Action.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/Action.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/Action.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/search/Action.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/search/BattleScumSearcher2.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/BattleScumSearcher2.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/BattleScumSearcher2.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/search/BattleScumSearcher2.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/search/ExpertKnowledge.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/ExpertKnowledge.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/ExpertKnowledge.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/search/ExpertKnowledge.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/search/GameAction.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/GameAction.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/GameAction.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/search/GameAction.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/search/ScumSearchAgent2.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/ScumSearchAgent2.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/ScumSearchAgent2.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/search/ScumSearchAgent2.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/test.dir/src/sim/search/SimpleAgent.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/SimpleAgent.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/SimpleAgent.cpp",
+  "output": "CMakeFiles/test.dir/src/sim/search/SimpleAgent.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/apps/small-test.cpp.o -c /Users/ben/code/sts-ai/apps/small-test.cpp",
+  "file": "/Users/ben/code/sts-ai/apps/small-test.cpp",
+  "output": "CMakeFiles/small-test.dir/apps/small-test.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/Actions.cpp.o -c /Users/ben/code/sts-ai/src/combat/Actions.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Actions.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/Actions.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/BattleContext.cpp.o -c /Users/ben/code/sts-ai/src/combat/BattleContext.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/BattleContext.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/BattleContext.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/CardInstance.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardInstance.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardInstance.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/CardInstance.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/CardManager.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardManager.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardManager.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/CardManager.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/CardQueue.cpp.o -c /Users/ben/code/sts-ai/src/combat/CardQueue.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/CardQueue.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/CardQueue.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/Monster.cpp.o -c /Users/ben/code/sts-ai/src/combat/Monster.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Monster.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/Monster.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/MonsterGroup.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterGroup.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterGroup.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/MonsterGroup.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/MonsterMoveDamage.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterMoveDamage.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterMoveDamage.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/MonsterMoveDamage.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/MonsterSpecific.cpp.o -c /Users/ben/code/sts-ai/src/combat/MonsterSpecific.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/MonsterSpecific.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/MonsterSpecific.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/combat/Player.cpp.o -c /Users/ben/code/sts-ai/src/combat/Player.cpp",
+  "file": "/Users/ben/code/sts-ai/src/combat/Player.cpp",
+  "output": "CMakeFiles/small-test.dir/src/combat/Player.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/Card.cpp.o -c /Users/ben/code/sts-ai/src/game/Card.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Card.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/Card.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/CombatReward.cpp.o -c /Users/ben/code/sts-ai/src/game/CombatReward.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/CombatReward.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/CombatReward.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/Deck.cpp.o -c /Users/ben/code/sts-ai/src/game/Deck.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Deck.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/Deck.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/Game.cpp.o -c /Users/ben/code/sts-ai/src/game/Game.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Game.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/Game.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/GameContext.cpp.o -c /Users/ben/code/sts-ai/src/game/GameContext.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/GameContext.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/GameContext.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/Map.cpp.o -c /Users/ben/code/sts-ai/src/game/Map.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Map.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/Map.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/Neow.cpp.o -c /Users/ben/code/sts-ai/src/game/Neow.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Neow.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/Neow.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/SaveFile.cpp.o -c /Users/ben/code/sts-ai/src/game/SaveFile.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/SaveFile.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/SaveFile.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/game/Shop.cpp.o -c /Users/ben/code/sts-ai/src/game/Shop.cpp",
+  "file": "/Users/ben/code/sts-ai/src/game/Shop.cpp",
+  "output": "CMakeFiles/small-test.dir/src/game/Shop.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/BattleSimulator.cpp.o -c /Users/ben/code/sts-ai/src/sim/BattleSimulator.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/BattleSimulator.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/BattleSimulator.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/ConsoleSimulator.cpp.o -c /Users/ben/code/sts-ai/src/sim/ConsoleSimulator.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/ConsoleSimulator.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/ConsoleSimulator.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/PrintHelpers.cpp.o -c /Users/ben/code/sts-ai/src/sim/PrintHelpers.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/PrintHelpers.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/PrintHelpers.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/SimHelpers.cpp.o -c /Users/ben/code/sts-ai/src/sim/SimHelpers.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/SimHelpers.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/SimHelpers.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/search/Action.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/Action.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/Action.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/search/Action.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/search/BattleScumSearcher2.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/BattleScumSearcher2.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/BattleScumSearcher2.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/search/BattleScumSearcher2.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/search/ExpertKnowledge.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/ExpertKnowledge.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/ExpertKnowledge.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/search/ExpertKnowledge.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/search/GameAction.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/GameAction.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/GameAction.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/search/GameAction.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/search/ScumSearchAgent2.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/ScumSearchAgent2.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/ScumSearchAgent2.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/search/ScumSearchAgent2.cpp.o"
+},
+{
+  "directory": "/Users/ben/code/sts-ai/build",
+  "command": "/usr/bin/c++  -I/Users/ben/code/sts-ai/include -I/Users/ben/code/sts-ai/json/include -Wno-shift-count-overflow -O3 -g -std=gnu++17 -arch arm64 -o CMakeFiles/small-test.dir/src/sim/search/SimpleAgent.cpp.o -c /Users/ben/code/sts-ai/src/sim/search/SimpleAgent.cpp",
+  "file": "/Users/ben/code/sts-ai/src/sim/search/SimpleAgent.cpp",
+  "output": "CMakeFiles/small-test.dir/src/sim/search/SimpleAgent.cpp.o"
+}
+]

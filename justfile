@@ -11,7 +11,7 @@ TEST_BUILD_DIR := "tests/build"
 
 # === Build Commands ===
 
-# Build the main project (creates main, test, and small-test executables)
+# Build the main project (creates main, test, small-test, and battle executables)
 build:
     mkdir -p {{BUILD_DIR}}
     cd {{BUILD_DIR}} && cmake .. && make
@@ -95,6 +95,16 @@ run:
     just build
     ./{{BUILD_DIR}}/main
 
+# Run the standalone battle executable
+battle:
+    just build
+    ./{{BUILD_DIR}}/battle
+
+# Build only the battle executable
+build-battle:
+    mkdir -p {{BUILD_DIR}}
+    cd {{BUILD_DIR}} && cmake .. && make battle
+
 # Run simulator with save file replay
 run-save savefile actionfile:
     just build
@@ -113,6 +123,8 @@ check:
     @find . -name "*.cpp" -o -name "*.h" | head -20
     @echo "\nBuild files:"
     @ls -la {{BUILD_DIR}} 2>/dev/null || echo "Build directory not found"
+    @echo "\nExecutables:"
+    @ls -la {{BUILD_DIR}}/{main,test,small-test,battle} 2>/dev/null || echo "Some executables not found"
     @echo "\nTest files:"
     @ls -la {{TEST_BUILD_DIR}} 2>/dev/null || echo "Test build directory not found"
 
@@ -130,6 +142,20 @@ format:
     find src include apps tests/utils -name "*.cpp" -o -name "*.h" | xargs clang-format -i
 
 # === Utility Commands ===
+
+# Show all available executables and their purposes
+executables:
+    @echo "Available executables:"
+    @echo "  main         - Interactive console simulator for manual gameplay"
+    @echo "  test         - Comprehensive test runner with multiple commands"
+    @echo "  small-test   - Minimal test executable for quick testing"
+    @echo "  battle       - Standalone battle context simulator with SimpleAgent"
+    @echo ""
+    @echo "Usage examples:"
+    @echo "  just run            # Run interactive simulator"
+    @echo "  just battle         # Run standalone battle simulation"
+    @echo "  just test-small     # Run minimal test"
+    @echo "  just test agent_mt 1 1 0 1984 1 true  # Run AI agent test"
 
 # Show available test commands
 test-help:

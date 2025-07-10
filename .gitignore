@@ -3,3 +3,10 @@
 /.idea/
 CMakeFiles
 json/
+
+# Build artifacts (keep compile_commands.json)
+build/*
+!build/compile_commands.json
+
+# Test build artifacts
+tests/build/

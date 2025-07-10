@@ -31,3 +31,8 @@ add_executable(small-test apps/small-test.cpp ${sts_lightspeed_SOURCES})
 target_link_directories(small-test PRIVATE json::nlohmann_json)
 target_include_directories(small-test PUBLIC include)
 target_include_directories(small-test PUBLIC json/include)
+
+add_executable(battle apps/battle.cpp ${sts_lightspeed_SOURCES})
+target_link_directories(battle PRIVATE json::nlohmann_json)
+target_include_directories(battle PUBLIC include)
+target_include_directories(battle PUBLIC json/include)

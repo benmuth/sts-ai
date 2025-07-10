@@ -112,6 +112,7 @@ private:
         snapshot << std::endl;
         
         snapshot << "  Deck: " << bc.cards.drawPile.size() << " cards remaining" << std::endl;
+        // TODO(ben): add potions to initial state
         snapshot << std::endl;
     }
     
@@ -153,6 +154,7 @@ private:
                 break;
         }
         
+        // TODO(ben): add potions to final snapshot result
         snapshot << "  Player HP: " << bc.player.curHp << "/" << bc.player.maxHp << std::endl;
         snapshot << "  Turns: " << bc.turn << std::endl;
         

@@ -1241,6 +1241,14 @@ struct SimpleAgentInfo {
     std::int64_t floorSum = 0;
 };
 
+void myAgentMtRunner(SimpleAgentInfo *info) {
+    GameContext gc(CharacterClass::IRONCLAD, info->curSeed, 0);
+
+    search::SimpleAgent agent;
+    agent.print = info->shouldPrint;
+    agent.playout(gc);
+}
+
 void agentMtRunner(SimpleAgentInfo *info) {
     std::uint64_t seed;
     {
@@ -1277,6 +1285,15 @@ void agentMtRunner(SimpleAgentInfo *info) {
         }
     }
 }
+
+void search::SimpleAgent::myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {    SimpleAgentInfo info;
+    info.curSeed = startSeed;
+    info.seedStart = startSeed;
+    info.seedEnd = startSeed + playoutCount;
+    info.shouldPrint = print;
+
+    agentMtRunner(&info);
+};
 
 void search::SimpleAgent::runAgentsMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {
     auto startTime = std::chrono::high_resolution_clock::now();

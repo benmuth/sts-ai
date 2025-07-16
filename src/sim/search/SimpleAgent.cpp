@@ -1292,7 +1292,7 @@ void search::SimpleAgent::myRunAgentMt(int threadCount, std::uint64_t startSeed,
     info.seedEnd = startSeed + playoutCount;
     info.shouldPrint = print;
 
-    agentMtRunner(&info);
+    myAgentMtRunner(&info);
 };
 
 void search::SimpleAgent::runAgentsMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {

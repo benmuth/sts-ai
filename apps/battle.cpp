@@ -1,9 +1,5 @@
-#include <iostream>
-
 #include "combat/BattleContext.h"
-#include "constants/CardPools.h"
 #include "constants/MonsterEncounters.h"
-#include "data_structure/fixed_list.h"
 #include "game/GameContext.h"
 #include "sim/search/SimpleAgent.h"
 

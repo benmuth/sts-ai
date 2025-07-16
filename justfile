@@ -100,10 +100,21 @@ battle:
     just build
     ./{{BUILD_DIR}}/battle
 
+# Run battle with custom fight JSON file
+battle-with-fight fight_json:
+    just build
+    cp {{fight_json}} battle/sample_fight.json
+    ./{{BUILD_DIR}}/battle
+
 # Build only the battle executable
 build-battle:
     mkdir -p {{BUILD_DIR}}
     cd {{BUILD_DIR}} && cmake .. && make battle
+
+# Validate fight JSON syntax
+validate-fight-json fight_json:
+    @echo "Validating JSON syntax for {{fight_json}}..."
+    @python3 -m json.tool {{fight_json}} > /dev/null && echo "✓ Valid JSON syntax" || echo "✗ Invalid JSON syntax"
 
 # Run simulator with save file replay
 run-save savefile actionfile:

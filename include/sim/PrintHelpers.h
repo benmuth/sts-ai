@@ -7,6 +7,7 @@
 
 #include "constants/Cards.h"
 #include "constants/Relics.h"
+#include "constants/MonsterEncounters.h"
 
 #include "game/Card.h"
 #include "data_structure/fixed_list.h"
@@ -38,6 +39,8 @@ namespace sts {
     std::ostream& operator<<(std::ostream &os, const Card &card);
 
     std::ostream& operator<<(std::ostream& os,  const Deck &deck);
+
+    std::ostream& operator<<(std::ostream& os, MonsterEncounter encounter);
 
     void printEventListState(std::ostream &os, const GameContext &gc);
     void printPlayerInfo(std::ostream &os, const GameContext &gc);

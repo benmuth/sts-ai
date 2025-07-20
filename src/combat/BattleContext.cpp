@@ -5,6 +5,7 @@
 #include "combat/BattleContext.h"
 #include "game/GameContext.h"
 #include "game/Game.h"
+#include "sim/PrintHelpers.h"
 
 using namespace sts;
 
@@ -54,6 +55,7 @@ void BattleContext::init(const GameContext &gc, MonsterEncounter encounterToInit
     player.maxHp = gc.maxHp;
     player.gold = gc.gold;
 
+    std::cerr << "encounter: " << encounterToInit << std::endl;
     monsters.init(*this, encounterToInit);
     if (gc.map->burningEliteX == gc.curMapNodeX && gc.map->burningEliteY == gc.curMapNodeY) {
         monsters.applyEmeraldEliteBuff(*this, gc.map->burningEliteBuff, gc.act);

@@ -38,6 +38,14 @@ namespace sts {
         return os << "(" << deck.size() << "): " << deck.cards;
     }
 
+    std::ostream& operator<<(std::ostream& os, MonsterEncounter encounter) {
+        int index = static_cast<int>(encounter);
+        if (index >= 0 && index < sizeof(monsterEncounterEnumNames)/sizeof(monsterEncounterEnumNames[0])) {
+            return os << monsterEncounterEnumNames[index];
+        }
+        return os << "UNKNOWN_ENCOUNTER(" << index << ")";
+    }
+
     void printEventListState(std::ostream &os, const GameContext &gc) {
         os << "{";
         os << "\n\t\tevents:{";

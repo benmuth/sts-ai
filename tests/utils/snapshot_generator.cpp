@@ -9,7 +9,9 @@
 #include <string>
 #include <optional>
 
-#ifdef BATTLE_ONLY
+#define BATTLE_ONLY false
+
+#if BATTLE_ONLY
     #include "../../include/constants/MonsterEncounters.h"
     #include "../../include/sim/search/Action.h"
     #include "../../include/game/Card.h"
@@ -142,7 +144,7 @@ private:
     void executeActionSequence(BattleContext& bc, const json& actions) {
         snapshot << "Combat Progression:" << std::endl;
 
-#ifdef BATTLE_ONLY
+#if BATTLE_ONLY
         snapshot << "broken";
 #endif
         int turnNumber = 1;

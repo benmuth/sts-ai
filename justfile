@@ -37,11 +37,10 @@ build-debug:
 # === Test Commands ===
 
 # Build test infrastructure (snapshot generator)
-# Optional: battle_only="true" to build with -DBATTLE_ONLY
-build-tests battle_only="false":
+build-tests:
     mkdir -p {{TEST_BUILD_DIR}}
     #!/usr/bin/env bash
-    cd {{TEST_BUILD_DIR}} && if [ "{{battle_only}}" = "true" ]; then cmake -DCMAKE_CXX_FLAGS="-DBATTLE_ONLY" .. && make; else cmake .. && make; fi
+    cd {{TEST_BUILD_DIR}} && cmake .. && make
 
 # Run the main test suite (requires arguments)
 test *ARGS:
@@ -72,47 +71,16 @@ test-mcts savefile simulations:
 snapshot scenario output:
     just build-tests
     ./{{TEST_BUILD_DIR}}/snapshot_generator {{scenario}} {{output}}
-
-
-snapshot-cmp:
-    # Generate snapshots with normal build
-    just build-tests
-    mkdir -p tests/snapshots/normal tests/snapshots/battle_only
-    #!/usr/bin/env bash
-    for scenario in tests/scenarios/*.json; do \
-        filename=$(basename "$scenario" .json); \
-        echo "Generating normal snapshot for $filename"; \
-        ./{{TEST_BUILD_DIR}}/snapshot_generator "$scenario" "tests/snapshots/normal/$filename.snap"; \
-    done
-    
-    # Generate snapshots with BATTLE_ONLY flag
-    just build-tests true
-    #!/usr/bin/env bash
-    for scenario in tests/scenarios/*.json; do \
-        filename=$(basename "$scenario" .json); \
-        echo "Generating battle-only snapshot for $filename"; \
-        ./{{TEST_BUILD_DIR}}/snapshot_generator "$scenario" "tests/snapshots/battle_only/$filename.snap"; \
-    done
-    
-    # Compare the snapshots
-    #!/usr/bin/env bash
-    echo "Comparing snapshots..."; \
-    for scenario in tests/scenarios/*.json; do \
-        filename=$(basename "$scenario" .json); \
-        echo "Comparing $filename:"; \
-        if diff --text "tests/snapshots/normal/$filename.snap" "tests/snapshots/battle_only/$filename.snap"; then \
-            echo "✓ $filename: identical"; \
-        else \
-            echo "✗ $filename: different"; \
-        fi; \
-    done
-
     
 # Generate basic combat snapshot
 snapshot-basic:
     just build-tests
     mkdir -p tests/snapshots/basic_combat
     ./{{TEST_BUILD_DIR}}/snapshot_generator tests/scenarios/basic_strike_combat.json tests/snapshots/basic_combat/basic_strike_combat.snap
+
+# Run snapshot test script (compare normal vs battle-only builds)
+snapshot-test:
+    ./snapshot_test.sh
 
 # Test snapshot determinism (run multiple times and compare)
 test-determinism:

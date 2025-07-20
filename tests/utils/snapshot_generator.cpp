@@ -2,15 +2,19 @@
 // Minimal snapshot generator for combat testing
 //
 
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <optional>
 
 #include "../../json/single_include/nlohmann/json.hpp"
 #include "../../include/game/GameContext.h"
 #include "../../include/combat/BattleContext.h"
 #include "../../include/sim/search/Action.h"
+#include "../../include/game/Card.h"
+#include "../../include/constants/MonsterEncounters.h"
 
 using json = nlohmann::json;
 using namespace sts;
@@ -65,9 +69,19 @@ private:
         
         // Set encounter
         std::string encounterStr = scenario["initial_state"]["encounter"];
-        if (encounterStr == "CULTIST") {
-            gc.info.encounter = MonsterEncounter::CULTIST;
+
+        int index = 0;
+        for (const char* name : monsterEncounterEnumNames) {
+            if (name == encounterStr) {
+                break;
+            }
+            ++index;
+          }
+
+        if (index >= 0 && index < sizeof(monsterEncounterEnumNames)/sizeof(monsterEncounterEnumNames[0])) {
+             gc.info.encounter = MonsterEncounter(index);
         }
+
         
         // Clear deck and add cards from scenario
         gc.deck.cards.clear();
@@ -117,12 +131,44 @@ private:
     }
     
     void executeActionSequence(BattleContext& bc, const json& actions) {
-        // For now, just capture the initial state and let combat run naturally
-        // This avoids the assertion failures from manual action execution
-        
         snapshot << "Combat Progression:" << std::endl;
-        snapshot << "  Initial setup complete" << std::endl;
-        snapshot << "  Combat state: " << (bc.outcome == Outcome::UNDECIDED ? "READY" : "FINISHED") << std::endl;
+
+        int turnNumber = 1;
+
+        for (const auto& actionStr : actions) {
+            std::string action = actionStr.get<std::string>();
+
+            // Parse and execute the action
+            auto searchAction = parseAction(action);
+            if (searchAction.has_value()) {
+                // Validate action before execution
+                if (searchAction->isValidAction(bc)) {
+                    snapshot << "  Turn " << turnNumber << ": " << action;
+
+                    // Execute the action
+                    searchAction->execute(bc);
+
+                    // Format the result
+                    formatActionResult(bc, action);
+
+                    if (action == "end_turn") {
+                        turnNumber++;
+                    }
+
+                } else {
+                    snapshot << "  Invalid action: " << action << " (skipped)" << std::endl;
+                }
+            } else {
+                snapshot << "  Unknown action: " << action << " (skipped)" << std::endl;
+            }
+
+            // Check if combat is over
+            if (bc.outcome != Outcome::UNDECIDED) {
+                snapshot << "  Combat ended!" << std::endl;
+                break;
+            }
+        }
+
         snapshot << std::endl;
     }
     
@@ -164,7 +210,87 @@ private:
                  << ", misc=" << bc.miscRng.counter << std::endl;
     }
     
+    // Action parsing helper
+    std::optional<search::Action> parseAction(const std::string& actionStr) {
+        if (actionStr == "end_turn") {
+            return search::Action(search::ActionType::END_TURN);
+        }
+        else if (actionStr.substr(0, 10) == "play_card_") {
+            try {
+                int cardIndex = std::stoi(actionStr.substr(10));
+                // For simplicity, assume target 0 (enemy 0 or no target needed)
+                // More sophisticated targeting would require scenario specification
+                return search::Action(search::ActionType::CARD, cardIndex, 0);
+            } catch (const std::exception&) {
+                return std::nullopt;
+            }
+        }
+        else if (actionStr.substr(0, 13) == "use_potion_") {
+            try {
+                int potionIndex = std::stoi(actionStr.substr(13));
+                return search::Action(search::ActionType::POTION, potionIndex, 0);
+            } catch (const std::exception&) {
+                return std::nullopt;
+            }
+        }
+
+        return std::nullopt;
+    }
+
+    void formatActionResult(const BattleContext& bc, const std::string& action) {
+        if (action == "end_turn") {
+            snapshot << " → Turn ended";
+            if (bc.monsters.monsterCount > 0 && bc.monsters.arr[0].isAlive()) {
+                snapshot << ", enemy acts";
+            }
+            snapshot << std::endl;
+
+            // Show current state after turn
+            snapshot << "    Player: " << bc.player.curHp << "/" << bc.player.maxHp << " HP";
+            if (bc.monsters.monsterCount > 0) {
+                snapshot << " | Enemy: " << bc.monsters.arr[0].curHp << " HP";
+            }
+            snapshot << std::endl;
+        }
+        else if (action.substr(0, 10) == "play_card_") {
+            int cardIndex = std::stoi(action.substr(10));
+            if (cardIndex >= 0 && cardIndex < bc.cards.hand.size()) {
+                auto cardId = bc.cards.hand[cardIndex].getId();
+                snapshot << " → Played " << getCardName(cardId);
+
+                // Show damage/effects if applicable
+                if (isAttackCard(cardId)) {
+                    snapshot << " (damage dealt)";
+                } else if (isDefendCard(cardId)) {
+                    snapshot << " (gained block)";
+                }
+                snapshot << std::endl;
+
+                // Show updated state
+                snapshot << "    Player: " << bc.player.curHp << "/" << bc.player.maxHp
+                         << " HP, " << bc.player.block << " Block, " << bc.player.energy << " Energy";
+                if (bc.monsters.monsterCount > 0) {
+                    snapshot << " | Enemy: " << bc.monsters.arr[0].curHp << " HP";
+                }
+                snapshot << std::endl;
+            }
+        }
+        else if (action.substr(0, 13) == "use_potion_") {
+            snapshot << " → Used potion" << std::endl;
+        }
+    }
+
     // Helper methods for formatting
+    bool isAttackCard(CardId id) {
+        return id == CardId::STRIKE_RED || id == CardId::BASH ||
+               id == CardId::STRIKE_GREEN || id == CardId::STRIKE_BLUE || id == CardId::STRIKE_PURPLE;
+    }
+
+    bool isDefendCard(CardId id) {
+        return id == CardId::DEFEND_RED || id == CardId::DEFEND_GREEN ||
+               id == CardId::DEFEND_BLUE || id == CardId::DEFEND_PURPLE;
+    }
+
     std::string getCardName(CardId id) {
         switch (id) {
             case CardId::STRIKE_RED: return "Strike";

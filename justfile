@@ -21,8 +21,8 @@ rebuild: clean build
 
 # Clean build artifacts
 clean:
-    rm -rf {{BUILD_DIR}}
-    rm -rf {{TEST_BUILD_DIR}}
+    rm -r {{BUILD_DIR}}
+    rm -r {{TEST_BUILD_DIR}}
 
 # Build optimized release version
 build-release:
@@ -37,9 +37,11 @@ build-debug:
 # === Test Commands ===
 
 # Build test infrastructure (snapshot generator)
-build-tests:
+# Optional: battle_only="true" to build with -DBATTLE_ONLY
+build-tests battle_only="false":
     mkdir -p {{TEST_BUILD_DIR}}
-    cd {{TEST_BUILD_DIR}} && cmake .. && make
+    #!/usr/bin/env bash
+    cd {{TEST_BUILD_DIR}} && if [ "{{battle_only}}" = "true" ]; then cmake -DCMAKE_CXX_FLAGS="-DBATTLE_ONLY" .. && make; else cmake .. && make; fi
 
 # Run the main test suite (requires arguments)
 test *ARGS:
@@ -71,6 +73,41 @@ snapshot scenario output:
     just build-tests
     ./{{TEST_BUILD_DIR}}/snapshot_generator {{scenario}} {{output}}
 
+
+snapshot-cmp:
+    # Generate snapshots with normal build
+    just build-tests
+    mkdir -p tests/snapshots/normal tests/snapshots/battle_only
+    #!/usr/bin/env bash
+    for scenario in tests/scenarios/*.json; do \
+        filename=$(basename "$scenario" .json); \
+        echo "Generating normal snapshot for $filename"; \
+        ./{{TEST_BUILD_DIR}}/snapshot_generator "$scenario" "tests/snapshots/normal/$filename.snap"; \
+    done
+    
+    # Generate snapshots with BATTLE_ONLY flag
+    just build-tests true
+    #!/usr/bin/env bash
+    for scenario in tests/scenarios/*.json; do \
+        filename=$(basename "$scenario" .json); \
+        echo "Generating battle-only snapshot for $filename"; \
+        ./{{TEST_BUILD_DIR}}/snapshot_generator "$scenario" "tests/snapshots/battle_only/$filename.snap"; \
+    done
+    
+    # Compare the snapshots
+    #!/usr/bin/env bash
+    echo "Comparing snapshots..."; \
+    for scenario in tests/scenarios/*.json; do \
+        filename=$(basename "$scenario" .json); \
+        echo "Comparing $filename:"; \
+        if diff --text "tests/snapshots/normal/$filename.snap" "tests/snapshots/battle_only/$filename.snap"; then \
+            echo "✓ $filename: identical"; \
+        else \
+            echo "✗ $filename: different"; \
+        fi; \
+    done
+
+    
 # Generate basic combat snapshot
 snapshot-basic:
     just build-tests

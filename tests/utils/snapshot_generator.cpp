@@ -9,12 +9,21 @@
 #include <string>
 #include <optional>
 
-#include "../../json/single_include/nlohmann/json.hpp"
-#include "../../include/game/GameContext.h"
-#include "../../include/combat/BattleContext.h"
-#include "../../include/sim/search/Action.h"
-#include "../../include/game/Card.h"
-#include "../../include/constants/MonsterEncounters.h"
+#ifdef BATTLE_ONLY
+    #include "../../include/constants/MonsterEncounters.h"
+    #include "../../include/sim/search/Action.h"
+    #include "../../include/game/Card.h"
+    #include "../../json/single_include/nlohmann/json.hpp"
+    #include "../../battle/GameContext2.h"
+    #include "../../battle/BattleContext2.h"
+#else
+    #include "../../json/single_include/nlohmann/json.hpp"
+    #include "../../include/game/GameContext.h"
+    #include "../../include/combat/BattleContext.h"
+    #include "../../include/sim/search/Action.h"
+    #include "../../include/game/Card.h"
+    #include "../../include/constants/MonsterEncounters.h"
+#endif
 
 using json = nlohmann::json;
 using namespace sts;
@@ -133,6 +142,9 @@ private:
     void executeActionSequence(BattleContext& bc, const json& actions) {
         snapshot << "Combat Progression:" << std::endl;
 
+#ifdef BATTLE_ONLY
+        snapshot << "broken";
+#endif
         int turnNumber = 1;
 
         for (const auto& actionStr : actions) {

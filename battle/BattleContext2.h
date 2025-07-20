@@ -14,13 +14,14 @@
 #include "constants/Potions.h"
 #include "constants/MonsterEncounters.h"
 #include "combat/InputState.h"
-#include "combat/Player.h"
+#include "Player2.h"
 #include "combat/Monster.h"
 #include "combat/MonsterGroup.h"
 #include "combat/ActionQueue.h"
 #include "combat/CardQueue.h"
 #include "combat/Actions.h"
 #include "CardManager2.h"
+#include "Deck2.h"
 #include "combat/CardSelectInfo.h"
 #include "game/RelicContainer.h"
 #include "constants/Rooms.h"
@@ -89,6 +90,9 @@ namespace sts {
         MonsterGroup monsters;
         CardManager cards;
 
+        int stolenGold = 0;
+        bool playerLoss = false;
+
         CardQueueItem curCardQueueItem;
 
         std::bitset<32> miscBits; // 0 stolen gold check,
@@ -101,12 +105,11 @@ namespace sts {
         void init(const GameContext &gc, MonsterEncounter encounterToInit, bool burningElite);
 
         void init(const GameContext &gc);
-        void init(const GameContext &gc, MonsterEncounter encounterToInit);
 
         void initRelics(RelicContainer relics, sts::Room curRoom, sts::Room prevRoom, int curHp, int maxHp);
 
-        void exitBattle(GameContext &g) const;
-        void updateRelicsOnExit(GameContext &g) const;
+        void exitBattle(RelicContainer relics, Deck deck);
+        void updateRelicsOnExit(RelicContainer relics, Deck deck, Player player) const;
         void updateCardsOnExit(Deck &d) const; // for cards like ritual dagger, and eventually lesson learned results
 
 // ****************************************

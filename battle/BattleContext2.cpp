@@ -6,17 +6,13 @@
 #include "GameContext2.h"
 #include "Game2.h"
 #include "constants/Rooms.h"
+#include "Deck2.h"
+#include "game/RelicContainer.h"
 
 using namespace sts;
 
 namespace sts {
     thread_local BattleContext *g_debug_bc;
-}
-
-
-// assume all bc fields have just been initialized by in class member initializers
-void BattleContext::init(const GameContext &gc) {
-    init(gc, gc.info.encounter);
 }
 
 void BattleContext::init(const GameContext &gc, MonsterEncounter encounterToInit, bool burningElite) {
@@ -79,62 +75,6 @@ void BattleContext::init(const GameContext &gc, MonsterEncounter encounterToInit
     
 }
 
-void BattleContext::init(const GameContext &gc, MonsterEncounter encounterToInit) {
-    undefinedBehaviorEvoked = false;
-    haveUsedDiscoveryAction = false;
-    seed = gc.seed;
-    encounter = encounterToInit;
-
-    auto startRandom = Random(gc.seed+gc.floorNum);
-    aiRng = startRandom;
-    monsterHpRng = startRandom;
-    shuffleRng = startRandom;
-    cardRandomRng = startRandom;
-    miscRng = gc.miscRng;
-    potionRng = gc.potionRng;
-
-    ascension = gc.ascension;
-    outcome = Outcome::UNDECIDED;
-    inputState = InputState::EXECUTING_ACTIONS;
-    miscBits.reset();
-
-    monsterTurnIdx = 6;
-    skipMonsterTurn = false;
-    turnHasEnded = false;
-    isBattleOver = false;
-
-    actionQueue.clear();
-    cardQueue.clear();
-
-    potionCount = gc.potionCount;
-    potionCapacity = gc.potionCapacity;
-    potions = gc.potions;
-
-    player.curHp = gc.curHp;
-    player.maxHp = gc.maxHp;
-    player.gold = gc.gold;
-
-    monsters.init(*this, encounterToInit);
-    if (gc.map->burningEliteX == gc.curMapNodeX && gc.map->burningEliteY == gc.curMapNodeY) {
-        monsters.applyEmeraldEliteBuff(*this, gc.map->burningEliteBuff, gc.act);
-    }
-
-    player.cardDrawPerTurn = 5;
-    if (gc.hasRelic(R::SNECKO_EYE)) {
-        player.cardDrawPerTurn += 2;
-    }
-    if (gc.relics.has(R::RING_OF_THE_SERPENT)) {
-        player.cardDrawPerTurn += 1;
-    }
-    //addToBot(Actions::DrawCards(player.cardDrawPerTurn));
-
-    cards.init(gc.deck, *this);
-
-    initRelics(gc.relics, gc.curRoom, gc.lastRoom, gc.curHp, gc.maxHp);
-    player.energy += player.energyPerTurn;
-
-    executeActions();
-}
 
 // this doesnt apply powers in order, so if that matters in the future all relics will have to be sorted
 void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Room prevRoom, int curHp, int maxHp) {
@@ -152,9 +92,6 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
     for (const auto &r : relics.relics) {
         switch (r.id) {
 
-            case R::HOLY_WATER:
-            case R::NINJA_SCROLL:
-            case R::PURE_WATER:
             case R::TOOLBOX:
                 atBattleStartPreDraw.push_back(r.id);
                 break;
@@ -164,10 +101,6 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
             case R::CLOCKWORK_SOUVENIR:
             case R::GREMLIN_VISAGE:
             case R::RED_MASK:
-            case R::RING_OF_THE_SNAKE:
-            case R::TWISTED_FUNNEL:
-                atBattleStart.push_back(r.id);
-                break;
 
             case R::MARK_OF_PAIN:
                 ++p.energyPerTurn;
@@ -223,15 +156,6 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
 
             case R::INK_BOTTLE:
                 p.inkBottleCounter = r.data;
-                break;
-
-            case R::INSERTER:
-                if (r.data) {
-                    p.inserterCounter = 0;
-                    p.increaseOrbSlots(1);
-                } else {
-                    p.inserterCounter = 1;
-                }
                 break;
 
             case R::LIZARD_TAIL:
@@ -309,20 +233,8 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
                 p.energyPerTurn++;
                 break;
 
-            case R::CRACKED_CORE:
-                p.channelOrb(Orb::LIGHTNING);
-                break;
-
             case R::CURSED_KEY:
                 p.energyPerTurn++;
-                break;
-
-            case R::DAMARU:
-                p.buff<PS::MANTRA>(1);
-                break;
-
-            case R::DATA_DISK:
-                p.buff<PS::FOCUS>(1);
                 break;
 
             case R::DU_VU_DOLL:
@@ -359,10 +271,6 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
                 }
                 break;
 
-            case R::NUCLEAR_BATTERY:
-                p.channelOrb(Orb::FUSION);
-                break;
-
             case R::ODDLY_SMOOTH_STONE:
                 p.buff<PS::DEXTERITY>(1);
                 break;
@@ -387,10 +295,6 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
 //                p.cardDrawPerTurn++;
                 break;
 
-            case R::RUNIC_CAPACITOR:
-                p.increaseOrbSlots(3);
-                break;
-
             case R::SLAVERS_COLLAR:
                 if (room == Room::ELITE || room == Room::BOSS) { // todo this needs to be set by eliteTrigger maybe?
                     p.energyPerTurn++;
@@ -405,10 +309,6 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
 
             case R::SYMBIOTIC_VIRUS:
                 p.channelOrb(Orb::DARK);
-                break;
-
-            case R::TEARDROP_LOCKET:
-                p.changeStance<Stance::CALM>();
                 break;
 
             case R::THREAD_AND_NEEDLE:
@@ -427,18 +327,6 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
     // todo maybe move this to proper place -nvm drawCards is added below this
     for (auto r : atBattleStartPreDraw) {
         switch (r) {
-            case R::HOLY_WATER:
-                addToBot(Actions::MakeTempCardInHand(CardId::MIRACLE, false, 3));
-                break;
-
-            case R::NINJA_SCROLL:
-                addToBot(Actions::MakeTempCardInHand(CardId::SHIV, false, 3) );
-                break;
-
-            case R::PURE_WATER:
-                addToBot(Actions::MakeTempCardInHand(CardId::MIRACLE, false, 1));
-                break;
-
             case R::TOOLBOX:
                 addToBot( Actions::ToolboxAction() );
                 break;
@@ -474,14 +362,6 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
 
             case R::RED_MASK:
                 addToBot( Actions::DebuffAllEnemy<MS::WEAK>(1) );
-                break;
-
-            case R::RING_OF_THE_SNAKE:
-                addToBot( Actions::DrawCards(2) );
-                break;
-
-            case R::TWISTED_FUNNEL:
-                addToBot( Actions::DebuffAllEnemy<MS::POISON>(4) );
                 break;
 
             default:
@@ -524,43 +404,25 @@ void BattleContext::initRelics(RelicContainer relics, sts::Room curRoom, sts::Ro
     //RelicCables -> OnStartOfTurn again for orb 0
 }
 
-void BattleContext::exitBattle(GameContext &g) const {
+void BattleContext::exitBattle(sts::RelicContainer relics, Deck deck) {
     // do this first so that darkstone periapt is overridden by curHp and maxHp are set afterwards
     const auto &m = monsters.arr[0];
     if (m.id == MonsterId::WRITHING_MASS && m.miscInfo) {
         if (player.hasRelic<R::OMAMORI>()) {
-            --g.relics.getRelicValueRef(RelicId::OMAMORI);
+            --relics.getRelicValueRef(RelicId::OMAMORI);
         } else {
-            g.deck.obtain(g, CardId::PARASITE);
+            deck.obtain(Card(CardId::PARASITE), 1, relics);
 
         }
     }
 
-    g.potionCount = potionCount;
-    g.potions = potions;
-
-    // not sure its really necessary to sync these every time, (i believe colosseum is the only time two battles occur on the same floor)
-    g.aiRng = aiRng;
-    g.cardRandomRng = cardRandomRng;
-    g.miscRng = miscRng;
-    g.monsterHpRng = monsterHpRng;
-    g.potionRng = potionRng;
-    g.shuffleRng = shuffleRng;
-
-    g.curHp = player.curHp;
-    g.maxHp = player.maxHp;
-    g.gold = player.gold;
-
-
-    // todo lesson learned bitset
-
     // relic counters
-    updateRelicsOnExit(g);
+    updateRelicsOnExit(relics, deck, player);
 
     // cards
-    updateCardsOnExit(g.deck);
+    updateCardsOnExit(deck);
 
-    g.info.stolenGold = 0;
+    stolenGold = 0;
     if (requiresStolenGoldCheck()) {
         for (int i = 0; i < monsters.monsterCount; ++i) {
             const auto &m = monsters.arr[i];
@@ -570,24 +432,18 @@ void BattleContext::exitBattle(GameContext &g) const {
                                                  m.moveHistory[0] == MMID::MUGGER_ESCAPE);
 
             if (canHaveStolenGold && !escaped) {
-                g.info.stolenGold += m.miscInfo;
+                stolenGold += m.miscInfo;
             }
         }
     }
 
-    if (outcome == Outcome::PLAYER_LOSS) {
-        g.outcome = GameOutcome::PLAYER_LOSS;
-    } else {
-        // player victory
-        g.regainControl();
-    }
+    playerLoss = (outcome == Outcome::PLAYER_LOSS);
 
-    BattleContext::sum += g.curHp + g.maxHp + g.gold + g.act
-            + g.ascension + g.floorNum + potionRng.counter + cardRandomRng.counter;
+    BattleContext::sum += player.curHp + player.maxHp + player.gold + ascension + potionRng.counter + cardRandomRng.counter;
 }
 
-void BattleContext::updateRelicsOnExit(GameContext &g) const {
-    for (auto &r : g.relics.relics) {
+void BattleContext::updateRelicsOnExit(RelicContainer relics, Deck deck, Player player) const {
+    for (auto &r : relics.relics) {
         switch (r.id) {
             case RelicId::HAPPY_FLOWER:
                 r.data = player.happyFlowerCounter;
@@ -599,10 +455,6 @@ void BattleContext::updateRelicsOnExit(GameContext &g) const {
 
             case RelicId::INK_BOTTLE:
                 r.data = player.inkBottleCounter;
-                break;
-
-            case RelicId::INSERTER:
-                r.data = player.inserterCounter;
                 break;
 
             case RelicId::NEOWS_LAMENT:
@@ -636,19 +488,19 @@ void BattleContext::updateRelicsOnExit(GameContext &g) const {
 
             case RelicId::BURNING_BLOOD:
                 if (outcome == Outcome::PLAYER_VICTORY) {
-                    g.playerHeal(6);
+                    player.heal(6);
                 }
                 break;
 
             case RelicId::BLACK_BLOOD:
                 if (outcome == Outcome::PLAYER_VICTORY) {
-                    g.playerHeal(12);
+                    player.heal(12);
                 }
                 break;
 
             case RelicId::MEAT_ON_THE_BONE:
-                if (outcome == Outcome::PLAYER_VICTORY && g.curHp <= g.maxHp / 2) {
-                    g.playerHeal(12);
+                if (outcome == Outcome::PLAYER_VICTORY && player.curHp <= player.maxHp / 2) {
+                    player.heal(12);
                 }
                 break;
 

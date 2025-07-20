@@ -12,7 +12,7 @@
 
 #include "combat/CardInstance.h"
 #include "game/Random.h"
-#include "game/Deck.h"
+#include "Deck2.h"
 
 namespace sts {
 

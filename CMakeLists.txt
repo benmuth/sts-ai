@@ -41,8 +41,30 @@ target_link_directories(small-test PRIVATE json::nlohmann_json)
 target_include_directories(small-test PUBLIC include)
 target_include_directories(small-test PUBLIC json/include)
 
-add_executable(battle battle/main.cpp battle/FightDefinition.cpp battle/BattleContext2.cpp battle/GameContext2.cpp battle/CardManager2.cpp battle/Game2.cpp ${sts_battle_SOURCES})
+# Create a minimal source list for battle executable (only essential files)
+set(sts_battle_minimal_SOURCES
+    "src/combat/Monster.cpp"
+    "src/combat/MonsterGroup.cpp"
+    "src/combat/MonsterMoveDamage.cpp"
+    "src/combat/MonsterSpecific.cpp"
+    "src/combat/Actions.cpp"
+    "src/combat/CardQueue.cpp"
+    "src/combat/CardInstance.cpp"
+    "src/game/Card.cpp"
+)
+
+add_executable(battle
+    battle/main.cpp
+    battle/FightDefinition.cpp
+    battle/BattleContext2.cpp
+    battle/GameContext2.cpp
+    battle/CardManager2.cpp
+    battle/Game2.cpp
+    battle/Deck2.cpp
+    battle/Player2.cpp
+    ${sts_battle_minimal_SOURCES}
+)
 target_link_directories(battle PRIVATE json::nlohmann_json)
+target_include_directories(battle PUBLIC battle)
 target_include_directories(battle PUBLIC include)
 target_include_directories(battle PUBLIC json/include)
-target_include_directories(battle PUBLIC battle)

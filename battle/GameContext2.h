@@ -26,7 +26,7 @@
 #include "game/RelicContainer.h"
 #include "game/Card.h"
 #include "game/Rewards.h"
-#include "game/Deck.h"
+#include "Deck2.h"
 #include "game/Shop.h"
 
 namespace sts {
@@ -255,32 +255,17 @@ namespace sts {
         [[nodiscard]] bool canAddEvent(Event event) const;
 
         // initialization
-        void initRelics();
-        void initPlayer();
-        void generateMonsters();
-        void generateWeakMonsters();
-        void generateStrongMonsters();
-        void generateElites();
-        void generateBoss();
-        void populateMonsterList(const MonsterEncounter monsters[], const float weights[], int monstersSize, int numMonsters);
-        void populateFirstStrongEnemy(const MonsterEncounter monsters[], const float weights[], int monstersSize);
+        // void populateMonsterList(const MonsterEncounter monsters[], const float weights[], int monstersSize, int numMonsters);
+        // void populateFirstStrongEnemy(const MonsterEncounter monsters[], const float weights[], int monstersSize);
 
         // room setup
-        void transitionToAct(int act);
-        void transitionToMapNode(int mapNodeX);
-        void setupEvent();
-        void setupTreasureRoom();
-        void enterBossTreasureRoom();
-        void enterAct3VictoryRoom();
         void enterBattle(MonsterEncounter encounter);
         void afterBattle();
 
         // actions
         void obtainCard(Card c, int count=1);
         void obtainGold(int amount);
-        void obtainKey(Key key);
         void obtainPotion(Potion p);
-        bool obtainRelic(RelicId r);
 
         RelicId returnRandomRelic(RelicTier tier, bool shopRoom=false, bool fromFront=true);
         RelicId returnNonCampfireRelic(RelicTier tier, bool shopRoom=false);
@@ -335,7 +320,6 @@ namespace sts {
         void openCardSelectScreen(CardSelectScreenType type, int selectCount, bool initSelectCards=true);
 
         // interface methods
-        void chooseNeowOption(const Neow::Option &gc);
         void chooseBossRelic(int idx);
         void chooseEventOption(int idx);
         void chooseSelectCardScreenOption(int idx);

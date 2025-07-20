@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <cassert>
 
-#include "constants/RelicPools.h"
 #include "constants/CardPools.h"
 #include "BattleContext2.h"
 #include "game/SaveFile.h"
@@ -17,10 +16,10 @@
 
 using namespace sts;
 
-const GameContextAction returnToMapAction = [](auto &gs) {
-    gs.screenState = ScreenState::MAP_SCREEN;
-    gs.regainControlAction = nullptr;
-};
+// const GameContextAction returnToMapAction = [](auto &gs) {
+//     gs.screenState = ScreenState::MAP_SCREEN;
+//     gs.regainControlAction = nullptr;
+// };
 
 int rollWeightedIdx(float roll, const float *weights, int weightSize);
 
@@ -48,21 +47,21 @@ GameContext::GameContext(CharacterClass cc, std::uint64_t seed, int ascension)
     mathUtilRng(seed-897897), // uses a time based seed -_-
     cc(cc),
     ascension(ascension) {
-    eventList.insert(eventList.end(), EventPools::Act1::events.begin(), EventPools::Act1::events.end());
-    shrineList.insert(shrineList.end(), EventPools::Act1::shrines.begin(), EventPools::Act1::shrines.end());
-    if (ascension < 15) {
-        specialOneTimeEventList.insert(specialOneTimeEventList.end(), EventPools::oneTimeEventsAsc0.begin(),
-                                       EventPools::oneTimeEventsAsc0.end());
-    } else {
-        specialOneTimeEventList.insert(specialOneTimeEventList.end(), EventPools::oneTimeEventsAsc15.begin(),
-                                       EventPools::oneTimeEventsAsc15.end());
-    }
+    // eventList.insert(eventList.end(), EventPools::Act1::events.begin(), EventPools::Act1::events.end());
+    // shrineList.insert(shrineList.end(), EventPools::Act1::shrines.begin(), EventPools::Act1::shrines.end());
+    // if (ascension < 15) {
+    //     specialOneTimeEventList.insert(specialOneTimeEventList.end(), EventPools::oneTimeEventsAsc0.begin(),
+    //                                    EventPools::oneTimeEventsAsc0.end());
+    // } else {
+    //     specialOneTimeEventList.insert(specialOneTimeEventList.end(), EventPools::oneTimeEventsAsc15.begin(),
+    //                                    EventPools::oneTimeEventsAsc15.end());
+    // }
 
     potionCapacity = ascension < 11 ? 3 : 2;
     std::fill(potions.begin(), potions.end(), Potion::EMPTY_POTION_SLOT);
 
-    curEvent = Event::NEOW;
-    screenState = ScreenState::EVENT_SCREEN;
+    // curEvent = Event::NEOW;
+    // screenState = ScreenState::EVENT_SCREEN;
 }
 
 

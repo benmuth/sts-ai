@@ -144,9 +144,6 @@ private:
     void executeActionSequence(BattleContext& bc, const json& actions) {
         snapshot << "Combat Progression:" << std::endl;
 
-#if BATTLE_ONLY
-        snapshot << "broken";
-#endif
         int turnNumber = 1;
 
         for (const auto& actionStr : actions) {

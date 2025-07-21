@@ -129,10 +129,10 @@ private:
         
         // Format hand
         snapshot << "  Hand: ";
-        for (int i = 0; i < bc.cards.hand.size(); ++i) {
+        for (int i = 0; i < bc.cards.cardsInHand; ++i) {
             if (i > 0) snapshot << ", ";
             const auto& card = bc.cards.hand[i];
-            snapshot << getCardName(card.getId()) << "(" << card.cost << ")";
+            snapshot << getCardName(card.getId()) << "(" << int(card.cost) << ")";
         }
         snapshot << std::endl;
         

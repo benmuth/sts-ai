@@ -37,10 +37,10 @@ build-debug:
 # === Test Commands ===
 
 # Build test infrastructure (snapshot generator)
-build-tests:
+build-tests battle="false":
     mkdir -p {{TEST_BUILD_DIR}}
     #!/usr/bin/env bash
-    cd {{TEST_BUILD_DIR}} && cmake .. && make
+    cd {{TEST_BUILD_DIR}} && cmake -DBATTLE_ONLY={{battle}} .. && make
 
 # Run the main test suite (requires arguments)
 test *ARGS:

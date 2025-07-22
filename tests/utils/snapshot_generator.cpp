@@ -9,22 +9,19 @@
 #include <string>
 #include <optional>
 
-#define BATTLE_ONLY false
+#include "../../include/constants/MonsterEncounters.h"
+#include "../../include/game/Card.h"
+#include "../../json/single_include/nlohmann/json.hpp"
+#include "../../include/sim/search/Action.h"
 
-#if BATTLE_ONLY
-    #include "../../include/constants/MonsterEncounters.h"
-    #include "../../include/sim/search/Action.h"
-    #include "../../include/game/Card.h"
-    #include "../../json/single_include/nlohmann/json.hpp"
+// #define BATTLE_ONLY false
+
+#ifndef BATTLE_ONLY
     #include "../../battle/GameContext2.h"
     #include "../../battle/BattleContext2.h"
 #else
-    #include "../../json/single_include/nlohmann/json.hpp"
     #include "../../include/game/GameContext.h"
     #include "../../include/combat/BattleContext.h"
-    #include "../../include/sim/search/Action.h"
-    #include "../../include/game/Card.h"
-    #include "../../include/constants/MonsterEncounters.h"
 #endif
 
 using json = nlohmann::json;
@@ -143,6 +140,10 @@ private:
     
     void executeActionSequence(BattleContext& bc, const json& actions) {
         snapshot << "Combat Progression:" << std::endl;
+
+#ifndef BATTLE_ONLY
+    snapshot << "broken";
+#endif
 
         int turnNumber = 1;
 

@@ -1,7 +1,7 @@
 /cmake-build-*/
 /files/
 /.idea/
-CMakeFiles
+# CMakeFiles
 json/
 
 # Build artifacts (keep compile_commands.json)

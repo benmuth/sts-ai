@@ -11,3 +11,9 @@ set(CMAKE_CXX_FLAGS  "-Wno-shift-count-overflow -O3")
 add_executable(snapshot_generator utils/snapshot_generator.cpp ${sts_lightspeed_SOURCES})
 target_include_directories(snapshot_generator PUBLIC ../include)
 target_include_directories(snapshot_generator PUBLIC ../json/include)
+
+option(BATTLE_ONLY "Compile with battle_only" true)
+
+if (BATTLE_ONLY)
+  set(BATTLE_ONLY true CACHE STRING "sets battle only")
+endif()

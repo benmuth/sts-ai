@@ -8,7 +8,7 @@ Initial State:
   Deck: 5 cards remaining
 
 Combat Progression:
-  Turn 1: play_card_0 → Played Strike (damage dealt)
+broken  Turn 1: play_card_0 → Played Strike (damage dealt)
     Player: 80/80 HP, 0 Block, 1 Energy | Enemy: 44 HP
   Turn 1: end_turn → Turn ended, enemy acts
     Player: 80/80 HP | Enemy: 44 HP

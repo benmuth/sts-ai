@@ -13,11 +13,11 @@ for file in ./tests/scenarios/*.json; do
 	./tests/build/snapshot_generator "$file" "./tests/snapshots/normal/$(basename $file .json).snap"
 done
 
-sed -i -e 's/\#define BATTLE_ONLY false/\#define BATTLE_ONLY true/g' ./tests/utils/snapshot_generator.cpp
+# sed -i -e 's/\#define BATTLE_ONLY false/\#define BATTLE_ONLY true/g' ./tests/utils/snapshot_generator.cpp
 
-trap "sed -i -e 's/\#define BATTLE_ONLY true/\#define BATTLE_ONLY false/g' ./tests/utils/snapshot_generator.cpp" EXIT
+# trap "sed -i -e 's/\#define BATTLE_ONLY true/\#define BATTLE_ONLY false/g' ./tests/utils/snapshot_generator.cpp" EXIT
 
-just build-tests
+just build-tests battle="true"
 
 for file in ./tests/scenarios/*.json; do
 	echo "$file"

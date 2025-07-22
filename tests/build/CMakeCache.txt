@@ -14,8 +14,8 @@
 # EXTERNAL cache entries
 ########################
 
-//No help, variable specified on the command line.
-BATTLE_ONLY:UNINITIALIZED=OFF
+//Compile with battle_only
+BATTLE_ONLY:BOOL=battle=true
 
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=CMAKE_ADDR2LINE-NOTFOUND

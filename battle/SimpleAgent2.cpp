@@ -1,0 +1,1040 @@
+//
+// Created by keega on 9/27/2021.
+//
+
+#include <algorithm>
+#include <SimpleAgent2.h>
+#include <Game2.h>
+#include "BattleContext2.h"
+#include "GameContext2.h"
+#include "BattleSimulator2.h"
+#include "combat/CardInstance.h"
+#include "constants/CharacterClasses.h"
+#include "constants/MonsterEncounters.h"
+#include "game/Card.h"
+#include "sim/PrintHelpers.h"
+#include "Action2.h"
+
+
+#include <map>
+#include <array>
+#include <bitset>
+#include <thread>
+#include <mutex>
+#include <vector>
+
+using namespace sts;
+
+static bool haveInitMaps = false;
+static int cardPriorityMap[372] {};
+static int cardPlayMap[372] {};
+static int bossRelicPriorityMap[200] {};
+static std::bitset<372> isAoeCard;
+static std::bitset<372> isDefensiveCard;
+static std::map<CardId, int> *maxCopies;
+
+static constexpr int mapWeights[3][6] = {
+        {100,1000,100,10,1,0},
+        {10,1000,10,100,1,0},
+        {100,1000,100,1,10,0},
+};
+
+
+void initMaps();
+
+bool shouldSkip(CardId id) {
+    return cardPriorityMap[static_cast<int>(id)] > cardPriorityMap[static_cast<int>(CardId::ANGER)];
+}
+
+int getHighHpMonster(const BattleContext &bc) {
+    int highHp = -1;
+    int highIdx = -1;
+    for (int i = 0; i < bc.monsters.monsterCount; ++i) {
+        if (bc.monsters.arr[i].isTargetable() && bc.monsters.arr[i].curHp > highHp) {
+            highHp = bc.monsters.arr[i].curHp;
+            highIdx = i;
+        }
+    }
+    return highIdx;
+}
+
+int getLowHpMonster(const BattleContext &bc) {
+    int lowHp = 10000;
+    int lowIdx = -1;
+    for (int i = 0; i < bc.monsters.monsterCount; ++i) {
+        if (bc.monsters.arr[i].isTargetable() && bc.monsters.arr[i].curHp < lowHp) {
+            lowHp = bc.monsters.arr[i].curHp;
+            lowIdx = i;
+        }
+    }
+    return lowIdx;
+}
+
+int getBestCardToPlay(const BattleContext &bc, fixed_list<int,10> handIdxs) {
+    int bestPriority = 10000;
+    int bestHandIdx;
+    for (int i = 0; i < handIdxs.size(); ++i) {
+        const auto c = bc.cards.hand[handIdxs[i]];
+        const int priority = 2 * cardPlayMap[static_cast<int>(c.getId())] + (c.isUpgraded() ? -1 : 0);
+        if (priority < bestPriority) {
+            bestPriority = priority;
+            bestHandIdx = handIdxs[i];
+        }
+    }
+    return bestHandIdx;
+}
+
+typedef struct {
+    BattleContext bc;
+    CardInstance card;
+
+} State;
+
+void search::myGetBestCardToPlay() {
+    GameContext gc = GameContext(CharacterClass::IRONCLAD, 0, 0);
+
+    BattleContext bc;
+    bc.init(gc, MonsterEncounter::JAW_WORM, false);
+
+    int seed_sample_count = 10;
+
+    // enumerate actions
+    std::deque<State> states;
+    for (int i = 0; i < std::size(bc.cards.hand); ++i) {
+        if (bc.cards.hand[i].id == CardId::INVALID) break;
+        auto new_bc = bc;
+        // auto action = search::Action(sts::search::ActionType::CARD, i);
+
+        State state = {new_bc, bc.cards.hand[i]};
+        states.push_front(state);
+    }
+    // sort actions by heuristic
+
+    for (int i = 0; i < seed_sample_count; ++i) {
+
+        // start dfs with first action
+        while (!states.empty()) {
+            auto state = states.front();
+            states.pop_front();
+
+            std::cout << "state: " << (state.card.getName()) << "\n";
+            std::cout << "hand: ";
+            bool first = true;
+            for (const auto& element : state.bc.cards.hand) {
+                if (!first) std::cout << ", ";
+                std::cout << element;
+                first = false;
+            }
+            std::cout << "\n";
+            // execute action
+            if (!state.card.requiresTarget()) {
+                auto *bestCard = std::find(std::begin(state.bc.cards.hand), std::end(state.bc.cards.hand), &state.card);
+                auto bestCardIdx = std::distance(std::begin(state.bc.cards.hand), bestCard);
+
+                auto action = search::Action(sts::search::ActionType::CARD, bestCardIdx);
+                action.execute(state.bc);
+            }
+
+            // push new states
+            for (int i = 0; i < std::size(state.bc.cards.hand); ++i) {
+                if (state.bc.cards.hand[i].id == CardId::INVALID) break;
+                auto new_bc = state.bc;
+                // auto action = search::Action(sts::search::ActionType::CARD, i);
+
+                State state = {new_bc, state.bc.cards.hand[i]};
+                states.push_front(state);
+            }
+
+            // eval action
+        }
+    }
+
+    // __dfs__ (with pruning)
+}
+
+// Removed sortCardOptions - not needed for battle-only mode
+// void sortCardOptions(const GameContext &gc, fixed_list<int,96> &sortedCardIdxs) { ... }
+
+//void sortCardOptions(const GameContext &gc, fixed_list<int,96> &sortedCardIdxs) {
+//    sortedCardIdxs.clear();
+//    for (int i = 0; i < gc.info.toSelectCards.size(); ++i) {
+//        sortedCardIdxs.push_back(i);
+//    }
+//
+//    if (gc.info.selectScreenType == sts::CardSelectScreenType::UPGRADE ||
+//        gc.info.selectScreenType == sts::CardSelectScreenType::DUPLICATE)
+//    {
+//        std::sort(sortedCardIdxs.begin(), sortedCardIdxs.end(), [&](int a, int b) {
+//            auto ca = gc.info.toSelectCards[a].card;
+//            auto cb = gc.info.toSelectCards[b].card;
+//            return cardPriorityMap[static_cast<int>(ca.id)] < cardPriorityMap[static_cast<int>(cb.id)];
+//        });
+//
+//    } else {
+//        std::sort(sortedCardIdxs.begin(), sortedCardIdxs.end(), [&](int a, int b) {
+//            auto ca = gc.info.toSelectCards[a].card;
+//            auto cb = gc.info.toSelectCards[b].card;
+//            auto pa = cardPriorityMap[static_cast<int>(ca.id)];
+//            auto pb = cardPriorityMap[static_cast<int>(cb.id)];
+//            if (gc.info.selectScreenType == sts::CardSelectScreenType::TRANSFORM ||
+//                gc.info.selectScreenType == sts::CardSelectScreenType::TRANSFORM_UPGRADE) {
+//                if (ca.getType() == sts::CardType::CURSE) {
+//                    pa -= 1000;
+//                }
+//                if (cb.getType() == sts::CardType::CURSE) {
+//                    pb -= 1000;
+//                }
+//            }
+//            return  pa > pb;
+//        });
+//    }
+//}
+
+int search::SimpleAgent::getIncomingDamage(const BattleContext &bc) const {
+    int incomingDamage = 0;
+    for (int i = 0; i < bc.monsters.monsterCount; ++i) {
+        const auto &m = bc.monsters.arr[i];
+        if (m.isDeadOrEscaped() || m.isHalfDead()) {
+            continue;
+        }
+
+        // NOTE(ben): No idea what this Runic Dome thing is about
+        DamageInfo dInfo;
+        if (bc.player.hasRelic<R::RUNIC_DOME>()) {
+            // dInfo = {5*curGameContext->act, 1}; // Commented out - curGameContext not available in battle-only mode
+            dInfo = {5, 1}; // Simplified for battle-only mode
+
+        } else {
+            dInfo = m.getMoveBaseDamage(bc);
+            dInfo.damage = m.calculateDamageToPlayer(bc, dInfo.damage);
+        }
+
+        incomingDamage += dInfo.damage * dInfo.attackCount;
+    }
+    return incomingDamage;
+}
+
+struct Path {
+    fixed_list<int,16> route;
+    int weight= 0;
+};
+
+// Removed getBestMapPathForWeights - not needed for battle-only mode
+// fixed_list<int,16> search::SimpleAgent::getBestMapPathForWeights(const Map &m, const int *weights) { ... }
+
+static void printHelper(const BattleContext &bc, const search::Action &a) {
+    std::cout << bc << std::endl;
+    a.printDesc(std::cout, bc) << " ";
+    std::cout
+            << " turn: " << bc.turn
+            << " energy: " << bc.player.energy
+            << " cardsPlayedThisTurn: " << bc.player.cardsPlayedThisTurn
+            << " state: " << (bc.inputState == InputState::PLAYER_NORMAL ? "normal" : " probably card select")
+            << std::endl;
+}
+
+search::SimpleAgent::SimpleAgent() {
+    initMaps();
+}
+
+// Removed non-battle takeAction - not needed for battle-only mode
+// void search::SimpleAgent::takeAction(GameContext &gc, search::GameAction a) { ... }
+
+void search::SimpleAgent::takeAction(BattleContext &bc, search::Action a) {
+    actionHistory.emplace_back(a.bits);
+    if (print) {
+        printHelper(bc, a);
+    }
+    a.execute(bc);
+}
+
+// Removed playoutBattleOnly wrapper - just use playoutBattle directly
+
+// returns whether all potions have been tried
+bool search::SimpleAgent::playPotion(BattleContext &bc) {
+    bool usedAll = true;
+    int i = 0;
+    for (; i < bc.potionCapacity; ++i) {
+        auto p = bc.potions[i];
+
+        bool canDrink = !(p == sts::Potion::FAIRY_POTION || p == sts::Potion::EMPTY_POTION_SLOT);
+
+        if (canDrink) {
+            int target = 0;
+            if (potionRequiresTarget(bc.potions[i]) ) {
+                if (bc.monsters.getTargetableCount() <= 0) {
+                    continue;
+                }
+                target = getHighHpMonster(bc);
+
+            } else {
+
+            }
+            takeAction(bc, search::Action(search::ActionType::POTION, i, target));
+            break;
+        }
+    }
+    return i == bc.potionCapacity;
+}
+
+void search::SimpleAgent::playoutBattle(BattleContext &bc) {
+    bool usedPotions = !isBossEncounter(bc.encounter);
+    while (bc.outcome == Outcome::UNDECIDED) {
+        if (bc.inputState == InputState::CARD_SELECT) {
+            stepBattleCardSelect(bc);
+
+        } else if (bc.inputState == InputState::PLAYER_NORMAL) {
+            if (usedPotions) {
+                stepBattleCardPlay(bc);
+
+            } else {
+                usedPotions = playPotion(bc);
+            }
+        } else {
+            assert(false);
+        }
+    }
+}
+
+void search::SimpleAgent::stepBattleCardPlay(BattleContext &bc) {
+    if (!bc.isCardPlayAllowed() || bc.player.cardsPlayedThisTurn > 1000) {
+        takeAction(bc, Action(ActionType::END_TURN));
+        return;
+    }
+
+    fixed_list<int,10> playableCardsIdxs;
+    for (int i = 0; i < bc.cards.cardsInHand; ++i) {
+        const auto &c = bc.cards.hand[i];
+        if (c.canUseOnAnyTarget(bc)) {
+            playableCardsIdxs.push_back(i);
+        }
+    }
+
+    if (playableCardsIdxs.empty()) {
+        takeAction(bc, Action(ActionType::END_TURN));
+        return;
+    }
+
+    fixed_list<int,10> zeroCost;
+    fixed_list<int,10> zeroCostAttacks;
+    fixed_list<int,10> zeroCostNonAttacks;
+    fixed_list<int,10> nonZeroCostCards;
+    fixed_list<int,10> aoeCards;
+
+    for (auto handIdx : playableCardsIdxs) {
+        const auto &c = bc.cards.hand[handIdx];
+        if (isAoeCard.test(static_cast<int>(c.getId()))) {
+            aoeCards.push_back(handIdx);
+        }
+        if (c.cost == 0 || c.costForTurn == 0) {
+            zeroCost.push_back(handIdx);
+            if (c.getType() == CardType::ATTACK) {
+                zeroCostAttacks.push_back(handIdx);
+            } else {
+                zeroCostNonAttacks.push_back(handIdx);
+            }
+        } else {
+            nonZeroCostCards.push_back(handIdx);
+        }
+    }
+
+    const int incomingDamage = getIncomingDamage(bc);
+    // if (bc.player.block > (incomingDamage - curGameContext->act - 4)) { // Commented out - curGameContext not available in battle-only mode
+    if (bc.player.block > (incomingDamage - 1 - 4)) { // Simplified for battle-only mode
+        fixed_list<int,10> offensiveCards;
+        for (auto handIdx : nonZeroCostCards) {
+            const auto &c = bc.cards.hand[handIdx];
+            const bool isDefensive = isDefensiveCard.test(static_cast<int>(c.getId()));
+            if (!isDefensive) {
+                offensiveCards.push_back(handIdx);
+            }
+        }
+
+        if (offensiveCards.empty()) {
+            for (int i = nonZeroCostCards.size()-1; i >= 0; --i) {
+                const auto &c = bc.cards.hand[nonZeroCostCards[i]];
+                if (c.doesExhaust()) {
+                    nonZeroCostCards.remove(i);
+                }
+            }
+        } else {
+            nonZeroCostCards = offensiveCards;
+        }
+    }
+
+    int bestCardIdx = playableCardsIdxs.front();
+    if (!zeroCostNonAttacks.empty()) {
+        bestCardIdx = getBestCardToPlay(bc, zeroCostNonAttacks);
+
+    } else if (!nonZeroCostCards.empty()) {
+        bestCardIdx = getBestCardToPlay(bc, nonZeroCostCards);
+        if (!aoeCards.empty() && bc.monsters.monstersAlive > 1 && bc.cards.hand[bestCardIdx].getType() == CardType::ATTACK) {
+            bestCardIdx = getBestCardToPlay(bc, aoeCards);
+        }
+
+    } else if (!zeroCostAttacks.empty()) {
+        bestCardIdx = getBestCardToPlay(bc, zeroCostAttacks);
+
+    } else {
+        takeAction(bc, Action(ActionType::END_TURN));
+        return;
+    }
+
+    const auto &c = bc.cards.hand[bestCardIdx];
+    if (!c.requiresTarget()) {
+        takeAction(bc, Action(ActionType::CARD, bestCardIdx));
+        return;
+    }
+
+    int targetIdx;
+    if (c.getType() == CardType::ATTACK) {
+         targetIdx = getLowHpMonster(bc);
+    } else {
+        targetIdx = getHighHpMonster(bc);
+    }
+    takeAction(bc, Action(ActionType::CARD, bestCardIdx, targetIdx));
+}
+
+template <typename ForwardIt>
+void setupCardOptionsHelper(std::vector<std::pair<search::Action,CardInstance>> &actions, const ForwardIt begin, const ForwardIt end, const std::function<bool(const CardInstance &)> &p= nullptr) {
+    for (int i = 0; begin+i != end; ++i) {
+        const auto &c = begin[i];
+        if (!p || (p(c))) {
+            actions.emplace_back(std::make_pair(search::Action(search::ActionType::SINGLE_CARD_SELECT, i), c));
+        }
+    }
+}
+
+
+
+
+
+void search::SimpleAgent::stepBattleCardSelect(BattleContext &bc) {
+
+    std::vector<std::pair<search::Action,CardInstance>> actions;
+    switch (bc.cardSelectInfo.cardSelectTask) {
+        case CardSelectTask::ARMAMENTS:
+            setupCardOptionsHelper( actions, bc.cards.hand.begin(), bc.cards.hand.begin() + bc.cards.cardsInHand,
+                                    [] (const CardInstance &c) { return c.canUpgrade(); });
+            break;
+
+        case CardSelectTask::CODEX:
+            for (int i = 0; i < 3; ++i) { // i -> 3 action means skip
+                actions.emplace_back(search::Action(search::ActionType::SINGLE_CARD_SELECT, i), bc.cardSelectInfo.codexCards()[i]);
+            }
+            break;
+
+        case CardSelectTask::DISCOVERY:
+            for (int i = 0; i < 3; ++i) {
+                actions.emplace_back(search::Action(search::ActionType::SINGLE_CARD_SELECT, i), bc.cardSelectInfo.codexCards()[i]);
+            }
+            break;
+
+        case CardSelectTask::DUAL_WIELD:
+            setupCardOptionsHelper( actions, bc.cards.hand.begin(), bc.cards.hand.begin() + bc.cards.cardsInHand,
+                                    [] (const CardInstance &c) {
+                                        return c.getType() == CardType::POWER || c.getType() == CardType::ATTACK;
+                                    });
+            break;
+
+        case CardSelectTask::EXHUME:
+            setupCardOptionsHelper(actions, bc.cards.exhaustPile.begin(), bc.cards.exhaustPile.end(),
+                                   [](const auto &c) { return c.getId() != CardId::EXHUME; });
+            break;
+
+        case CardSelectTask::EXHAUST_ONE:
+            setupCardOptionsHelper(actions, bc.cards.hand.begin(), bc.cards.hand.begin() + bc.cards.cardsInHand);
+            break;
+
+        case CardSelectTask::FORETHOUGHT:
+        case CardSelectTask::WARCRY:
+            setupCardOptionsHelper(actions, bc.cards.hand.begin(), bc.cards.hand.begin() + bc.cards.cardsInHand);
+            break;
+
+        case CardSelectTask::HEADBUTT:
+        case CardSelectTask::LIQUID_MEMORIES_POTION:
+            setupCardOptionsHelper(actions, bc.cards.discardPile.begin(), bc.cards.discardPile.end());
+            break;
+
+        case CardSelectTask::SECRET_TECHNIQUE:
+            setupCardOptionsHelper(actions, bc.cards.drawPile.begin(), bc.cards.drawPile.end(),
+                                   [] (const CardInstance &c) {
+                                       return c.getType() == CardType::SKILL;
+                                   });
+            break;
+
+        case CardSelectTask::SECRET_WEAPON:
+            setupCardOptionsHelper(actions, bc.cards.drawPile.begin(), bc.cards.drawPile.end(),
+                                   [] (const CardInstance &c) {
+                                       return c.getType() == CardType::ATTACK;
+                                   });
+            break;
+
+        case CardSelectTask::EXHAUST_MANY:
+        case CardSelectTask::GAMBLE: // just select none
+            takeAction(bc, search::Action(search::ActionType::MULTI_CARD_SELECT, 0));
+            return;
+
+        default:
+#ifdef sts_asserts
+            assert(false);
+#endif
+            break;
+    }
+
+    std::sort(actions.begin(), actions.end(), [](std::pair<search::Action,CardInstance> a, std::pair<search::Action,CardInstance> b) {
+        auto pa = 2 * cardPriorityMap[static_cast<int>(a.second.id)] + (a.second.isUpgraded() ? -1 : 0);
+        auto pb = 2 * cardPriorityMap[static_cast<int>(b.second.id)] + (b.second.isUpgraded() ? -1 : 0);
+        return pa < pb;
+    });
+
+    switch (bc.cardSelectInfo.cardSelectTask) {
+        case CardSelectTask::ARMAMENTS:
+        case CardSelectTask::DUAL_WIELD:
+        case CardSelectTask::CODEX:
+        case CardSelectTask::DISCOVERY:
+        case CardSelectTask::EXHUME:
+        case CardSelectTask::FORETHOUGHT:
+        case CardSelectTask::HEADBUTT:
+        case CardSelectTask::HOLOGRAM:
+        case CardSelectTask::LIQUID_MEMORIES_POTION:
+        case CardSelectTask::NIGHTMARE:
+        case CardSelectTask::MEDITATE:
+        case CardSelectTask::SECRET_TECHNIQUE:
+        case CardSelectTask::SECRET_WEAPON:
+        case CardSelectTask::SETUP:
+        case CardSelectTask::SEEK:
+        case CardSelectTask::WARCRY:
+            takeAction(bc, actions.front().first);
+            break;
+
+        case CardSelectTask::EXHAUST_ONE:
+        case CardSelectTask::RECYCLE:
+            takeAction(bc, actions.back().first);
+            break;
+
+        case CardSelectTask::EXHAUST_MANY:
+        case CardSelectTask::INVALID:
+        case CardSelectTask::GAMBLE:
+        default:
+#ifdef sts_asserts
+            assert(false);
+#endif
+            break;
+    }
+}
+
+// Removed stepOutOfCombat - not needed for battle-only mode
+// void search::SimpleAgent::stepOutOfCombat(GameContext &gc) { ... }
+
+// Removed non-battle methods - not needed for battle-only mode
+// void search::SimpleAgent::stepEventScreen(GameContext &gc) { ... }
+// void search::SimpleAgent::stepRestScreen(GameContext &gc) { ... }
+// void search::SimpleAgent::stepRewardsScreen(GameContext &gc) { ... }
+// void search::SimpleAgent::stepCardReward(GameContext &gc) { ... }
+// void search::SimpleAgent::stepShopScreen(GameContext &gc) { ... }
+
+constexpr std::array<CardId,133> cardsPriorities = {
+        CardId::APOTHEOSIS,
+        CardId::GHOSTLY_ARMOR,
+        CardId::PERFECTED_STRIKE,
+        CardId::WHIRLWIND,
+        CardId::BATTLE_TRANCE,
+        CardId::DEMON_FORM,
+        CardId::RAGE,
+        CardId::OFFERING,
+        CardId::IMPERVIOUS,
+        CardId::IMMOLATE,
+        CardId::LIMIT_BREAK,
+        CardId::FLAME_BARRIER,
+        CardId::MASTER_OF_STRATEGY,
+        CardId::INFLAME,
+        CardId::DISARM,
+        CardId::SHRUG_IT_OFF,
+        CardId::DOUBLE_TAP,
+        CardId::THUNDERCLAP,
+        CardId::METALLICIZE,
+        CardId::POMMEL_STRIKE,
+        CardId::SHOCKWAVE,
+        CardId::UPPERCUT,
+        CardId::JAX,
+        CardId::PANIC_BUTTON,
+        CardId::FLASH_OF_STEEL,
+        CardId::FLEX,
+        CardId::ANGER,
+        CardId::SECRET_WEAPON,
+        CardId::FINESSE,
+        CardId::MAYHEM,
+        CardId::PANACHE,
+        CardId::SECRET_TECHNIQUE,
+        CardId::METAMORPHOSIS,
+        CardId::THINKING_AHEAD,
+        CardId::MADNESS,
+        CardId::DISCOVERY,
+        CardId::CHRYSALIS,
+        CardId::DEEP_BREATH,
+        CardId::TRIP,
+        CardId::ENLIGHTENMENT,
+        CardId::HEAVY_BLADE,
+        CardId::FEED,
+        CardId::FIEND_FIRE,
+        CardId::TWIN_STRIKE,
+        CardId::HEADBUTT,
+        CardId::SEEING_RED,
+        CardId::COMBUST,
+        CardId::CLASH,
+        CardId::DARK_SHACKLES,
+        CardId::SWORD_BOOMERANG,
+        CardId::DRAMATIC_ENTRANCE,
+        CardId::BLUDGEON,
+        CardId::HAND_OF_GREED,
+        CardId::EVOLVE,
+        CardId::VIOLENCE,
+        CardId::BITE,
+        CardId::CARNAGE,
+        CardId::CLOTHESLINE,
+        CardId::BASH,
+        CardId::BANDAGE_UP,
+        CardId::PANACEA,
+        CardId::RECKLESS_CHARGE,
+        CardId::INFERNAL_BLADE,
+        CardId::SPOT_WEAKNESS,
+        CardId::STRIKE_RED,
+        CardId::SHIV,
+        CardId::HAVOC,
+        CardId::RITUAL_DAGGER,
+        CardId::DROPKICK,
+        CardId::FEEL_NO_PAIN,
+        CardId::SWIFT_STRIKE,
+        CardId::CORRUPTION,
+        CardId::MAGNETISM,
+        CardId::BLOODLETTING,
+        CardId::IRON_WAVE,
+        CardId::ARMAMENTS,
+        CardId::MIND_BLAST,
+        CardId::ASCENDERS_BANE,
+        CardId::DAZED,
+        CardId::VOID,
+        CardId::RAMPAGE,
+        CardId::GHOSTLY_ARMOR,
+        CardId::TRUE_GRIT,
+        CardId::BLIND,
+        CardId::GOOD_INSTINCTS,
+        CardId::PUMMEL,
+        CardId::HEMOKINESIS,
+        CardId::EXHUME,
+        CardId::REAPER,
+        CardId::CLEAVE,
+        CardId::WARCRY,
+        CardId::PURITY,
+        CardId::DUAL_WIELD,
+        CardId::WILD_STRIKE,
+        CardId::DEFEND_RED,
+        CardId::BODY_SLAM,
+        CardId::SEVER_SOUL,
+        CardId::BURNING_PACT,
+        CardId::BRUTALITY,
+        CardId::BARRICADE,
+        CardId::INTIMIDATE,
+        CardId::JUGGERNAUT,
+        CardId::SADISTIC_NATURE,
+        CardId::DARK_EMBRACE,
+        CardId::POWER_THROUGH,
+        CardId::TRANSMUTATION,
+        CardId::SENTINEL,
+        CardId::RUPTURE,
+        CardId::SLIMED,
+        CardId::FIRE_BREATHING,
+        CardId::SECOND_WIND,
+        CardId::IMPATIENCE,
+        CardId::THE_BOMB,
+        CardId::JACK_OF_ALL_TRADES,
+        CardId::SEARING_BLOW,
+        CardId::BLOOD_FOR_BLOOD,
+        CardId::BERSERK,
+        CardId::ENTRENCH,
+        CardId::FORETHOUGHT,
+        CardId::CLUMSY,
+        CardId::PARASITE,
+        CardId::SHAME,
+        CardId::INJURY,
+        CardId::WOUND,
+        CardId::WRITHE,
+        CardId::DOUBT,
+        CardId::BURN,
+        CardId::DECAY,
+        CardId::REGRET,
+        CardId::NECRONOMICURSE,
+        CardId::PAIN,
+        CardId::NORMALITY,
+        CardId::PRIDE,
+};
+
+constexpr std::array<CardId,133> cardPlayPriorities = {
+        CardId::APOTHEOSIS,
+        CardId::OFFERING,
+        CardId::DEMON_FORM,
+        CardId::INFLAME,
+        CardId::METALLICIZE,
+        CardId::DISARM,
+        CardId::SHOCKWAVE,
+        CardId::GHOSTLY_ARMOR,
+        CardId::LIMIT_BREAK,
+        CardId::DOUBLE_TAP,
+        CardId::THUNDERCLAP,
+        CardId::IMMOLATE,
+        CardId::UPPERCUT,
+        CardId::FLAME_BARRIER,
+        CardId::SHRUG_IT_OFF,
+        CardId::IMPERVIOUS,
+        CardId::MADNESS,
+        CardId::PERFECTED_STRIKE,
+        CardId::BATTLE_TRANCE,
+        CardId::RAGE,
+        CardId::MASTER_OF_STRATEGY,
+        CardId::POMMEL_STRIKE,
+        CardId::JAX,
+        CardId::FLASH_OF_STEEL,
+        CardId::FLEX,
+        CardId::ANGER,
+        CardId::DEFEND_RED,
+        CardId::BASH,
+        CardId::WHIRLWIND,
+        CardId::PANIC_BUTTON,
+        CardId::SECRET_WEAPON,
+        CardId::FINESSE,
+        CardId::MAYHEM,
+        CardId::PANACHE,
+        CardId::SECRET_TECHNIQUE,
+        CardId::METAMORPHOSIS,
+        CardId::THINKING_AHEAD,
+        CardId::DISCOVERY,
+        CardId::CHRYSALIS,
+        CardId::DEEP_BREATH,
+        CardId::TRIP,
+        CardId::ENLIGHTENMENT,
+        CardId::HEAVY_BLADE,
+        CardId::FEED,
+        CardId::FIEND_FIRE,
+        CardId::TWIN_STRIKE,
+        CardId::HEADBUTT,
+        CardId::SEEING_RED,
+        CardId::COMBUST,
+        CardId::CLASH,
+        CardId::DARK_SHACKLES,
+        CardId::SWORD_BOOMERANG,
+        CardId::DRAMATIC_ENTRANCE,
+        CardId::BLUDGEON,
+        CardId::HAND_OF_GREED,
+        CardId::EVOLVE,
+        CardId::VIOLENCE,
+        CardId::BITE,
+        CardId::CARNAGE,
+        CardId::CLOTHESLINE,
+        CardId::BANDAGE_UP,
+        CardId::PANACEA,
+        CardId::RECKLESS_CHARGE,
+        CardId::INFERNAL_BLADE,
+        CardId::STRIKE_RED,
+        CardId::SPOT_WEAKNESS,
+        CardId::SHIV,
+        CardId::HAVOC,
+        CardId::RITUAL_DAGGER,
+        CardId::DROPKICK,
+        CardId::FEEL_NO_PAIN,
+        CardId::SWIFT_STRIKE,
+        CardId::CORRUPTION,
+        CardId::MAGNETISM,
+        CardId::BLOODLETTING,
+        CardId::IRON_WAVE,
+        CardId::ARMAMENTS,
+        CardId::MIND_BLAST,
+        CardId::ASCENDERS_BANE,
+        CardId::DAZED,
+        CardId::VOID,
+        CardId::RAMPAGE,
+        CardId::GHOSTLY_ARMOR,
+        CardId::TRUE_GRIT,
+        CardId::BLIND,
+        CardId::GOOD_INSTINCTS,
+        CardId::PUMMEL,
+        CardId::HEMOKINESIS,
+        CardId::EXHUME,
+        CardId::REAPER,
+        CardId::CLEAVE,
+        CardId::WARCRY,
+        CardId::PURITY,
+        CardId::DUAL_WIELD,
+        CardId::WILD_STRIKE,
+        CardId::BODY_SLAM,
+        CardId::SEVER_SOUL,
+        CardId::BURNING_PACT,
+        CardId::BRUTALITY,
+        CardId::BARRICADE,
+        CardId::INTIMIDATE,
+        CardId::JUGGERNAUT,
+        CardId::SADISTIC_NATURE,
+        CardId::DARK_EMBRACE,
+        CardId::POWER_THROUGH,
+        CardId::TRANSMUTATION,
+        CardId::SENTINEL,
+        CardId::RUPTURE,
+        CardId::SLIMED,
+        CardId::FIRE_BREATHING,
+        CardId::SECOND_WIND,
+        CardId::IMPATIENCE,
+        CardId::THE_BOMB,
+        CardId::JACK_OF_ALL_TRADES,
+        CardId::SEARING_BLOW,
+        CardId::BLOOD_FOR_BLOOD,
+        CardId::BERSERK,
+        CardId::ENTRENCH,
+        CardId::FORETHOUGHT,
+        CardId::CLUMSY,
+        CardId::PARASITE,
+        CardId::SHAME,
+        CardId::INJURY,
+        CardId::WOUND,
+        CardId::WRITHE,
+        CardId::DOUBT,
+        CardId::BURN,
+        CardId::DECAY,
+        CardId::REGRET,
+        CardId::NECRONOMICURSE,
+        CardId::PAIN,
+        CardId::NORMALITY,
+        CardId::PRIDE,
+};
+
+constexpr std::array<CardId,13>  defensiveCards = {
+        CardId::POWER_THROUGH,
+        CardId::TRUE_GRIT,
+        CardId::IMPERVIOUS,
+        CardId::SHRUG_IT_OFF,
+        CardId::FLAME_BARRIER,
+        CardId::ENTRENCH,
+        CardId::DEFEND_RED,
+        CardId::SENTINEL,
+        CardId::SECOND_WIND,
+        CardId::GHOSTLY_ARMOR,
+        CardId::DARK_SHACKLES,
+        CardId::PANIC_BUTTON,
+        CardId::RAGE,
+};
+
+constexpr std::array<RelicId,24> bossRelicPriorities = {
+        R::SOZU,
+        R::SNECKO_EYE,
+        R::PHILOSOPHERS_STONE,
+        R::RUNIC_DOME,
+        R::CURSED_KEY,
+        R::FUSION_HAMMER,
+        R::VELVET_CHOKER,
+        R::ECTOPLASM,
+        R::MARK_OF_PAIN,
+        R::BUSTED_CROWN,
+        R::EMPTY_CAGE,
+        R::ASTROLABE,
+        R::RUNIC_PYRAMID,
+        R::LIZARD_TAIL,
+        R::ETERNAL_FEATHER,
+        R::COFFEE_DRIPPER,
+        R::BLACK_BLOOD,
+        R::TINY_HOUSE,
+        R::BLACK_STAR,
+        R::ORRERY,
+        R::RUNIC_CUBE,
+        R::PANDORAS_BOX,
+        R::WHITE_BEAST_STATUE,
+        R::CALLING_BELL,
+};
+
+
+void initMaps() {
+    // there are synchronization issues with this if multiple threads start at once
+    if (haveInitMaps) {
+        return;
+    }
+    haveInitMaps = true;
+    for (int i = 0; i < cardPlayPriorities.size(); ++i) {
+        CardId c = cardPlayPriorities[i];
+        cardPlayMap[static_cast<int>(c)] = i + 1;
+    }
+
+    for (int i = 0; i < cardsPriorities.size(); ++i) {
+        CardId c = cardsPriorities[i];
+        cardPriorityMap[static_cast<int>(c)] = i + 1;
+    }
+
+    for (int i = 0; i < bossRelicPriorities.size(); ++i) {
+        RelicId r = bossRelicPriorities[i];
+        bossRelicPriorityMap[static_cast<int>(r)] = i + 1;
+    }
+
+    maxCopies = new std::map<CardId, int>({
+        {CardId::OFFERING, 1},
+        {CardId::IMPERVIOUS, 99},
+        {CardId::APOTHEOSIS, 1},
+        {CardId::GHOSTLY_ARMOR, 99},
+        {CardId::PERFECTED_STRIKE, 99},
+        {CardId::WHIRLWIND, 2},
+        {CardId::BATTLE_TRANCE, 2},
+        {CardId::DEMON_FORM, 1},
+        {CardId::IMMOLATE, 1},
+        {CardId::RAGE, 2},
+        {CardId::LIMIT_BREAK, 3},
+        {CardId::FLAME_BARRIER, 2},
+        {CardId::MASTER_OF_STRATEGY, 99},
+        {CardId::INFLAME, 1},
+        {CardId::DISARM, 2},
+        {CardId::SHRUG_IT_OFF, 3},
+        {CardId::DOUBLE_TAP, 1},
+        {CardId::THUNDERCLAP, 1},
+        {CardId::METALLICIZE, 1},
+        {CardId::POMMEL_STRIKE, 1},
+        {CardId::SHOCKWAVE, 1},
+        {CardId::UPPERCUT, 1},
+        {CardId::JAX, 1},
+        {CardId::PANIC_BUTTON, 1},
+        {CardId::FLASH_OF_STEEL, 99},
+        {CardId::FLEX, 1}
+    });
+
+    for (auto c : defensiveCards) {
+        isDefensiveCard.set(static_cast<int>(c));
+    }
+
+    isAoeCard.set(static_cast<int>(CardId::CLEAVE));
+    isAoeCard.set(static_cast<int>(CardId::IMMOLATE));
+    isAoeCard.set(static_cast<int>(CardId::THUNDERCLAP));
+    isAoeCard.set(static_cast<int>(CardId::WHIRLWIND));
+}
+
+struct SimpleAgentInfo {
+    bool shouldPrint;
+    std::uint64_t seedStart;
+    std::uint64_t seedEnd;
+
+    std::mutex m;
+    std::uint64_t curSeed;
+    std::int64_t winCount = 0;
+    std::int64_t lossCount = 0;
+    std::int64_t floorSum = 0;
+};
+
+void myAgentMtRunner(SimpleAgentInfo *info) {
+    GameContext gc(CharacterClass::IRONCLAD, info->curSeed, 0);
+    BattleContext bc;
+    bc.init(gc, MonsterEncounter::JAW_WORM, false);
+
+    search::SimpleAgent agent;
+    agent.print = info->shouldPrint;
+    
+    if (info->shouldPrint) {
+        std::cout << "Starting battle with seed " << info->curSeed << std::endl;
+        std::cout << "Player HP: " << bc.player.curHp << "/" << bc.player.maxHp << std::endl;
+    }
+    
+    agent.playoutBattle(bc);
+    
+    if (info->shouldPrint) {
+        std::cout << "Battle finished!" << std::endl;
+        std::cout << "Outcome: ";
+        switch (bc.outcome) {
+            case Outcome::PLAYER_VICTORY:
+                std::cout << "PLAYER_VICTORY" << std::endl;
+                break;
+            case Outcome::PLAYER_LOSS:
+                std::cout << "PLAYER_LOSS" << std::endl;
+                break;
+            default:
+                std::cout << "UNDECIDED" << std::endl;
+                break;
+        }
+        std::cout << "Final HP: " << bc.player.curHp << "/" << bc.player.maxHp << std::endl;
+        std::cout << "Turns: " << bc.turn << std::endl;
+    }
+}
+
+void agentMtRunner(SimpleAgentInfo *info) {
+    std::uint64_t seed;
+    {
+        std::scoped_lock lock(info->m);
+        seed = info->curSeed++;
+    }
+
+    while(true) {
+        if (seed >= info->seedEnd) {
+            break;
+        }
+
+        // Battle-only test instead of full game
+        GameContext gc(CharacterClass::IRONCLAD, seed, 0);
+        BattleContext bc;
+        bc.init(gc, MonsterEncounter::JAW_WORM, false);
+
+        search::SimpleAgent agent;
+        agent.print = info->shouldPrint;
+        agent.playoutBattle(bc);
+
+        {
+            std::scoped_lock lock(info->m);
+            info->floorSum += 1; // Always floor 1 for battle test
+            if (bc.outcome == sts::Outcome::PLAYER_VICTORY) {
+                ++info->winCount;
+            } else {
+                ++info->lossCount;
+            }
+            seed = info->curSeed++;
+        }
+    }
+}
+
+void search::SimpleAgent::myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {    SimpleAgentInfo info;
+    info.curSeed = startSeed;
+    info.seedStart = startSeed;
+    info.seedEnd = startSeed + playoutCount;
+    info.shouldPrint = print;
+
+    myAgentMtRunner(&info);
+};
+
+void search::SimpleAgent::runAgentsMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {
+    auto startTime = std::chrono::high_resolution_clock::now();
+
+    std::vector<std::unique_ptr<std::thread>> threads;
+
+    SimpleAgentInfo info;
+    info.curSeed = startSeed;
+    info.seedStart = startSeed;
+    info.seedEnd = startSeed + playoutCount;
+    info.shouldPrint = print;
+
+
+    if (threadCount == 1) { // doing this for more consistency when benchmarking
+        agentMtRunner(&info);
+
+    } else {
+        for (int tid = 0; tid < threadCount; ++tid) {
+            threads.emplace_back(new std::thread(agentMtRunner, &info));
+        }
+    }
+
+    for (int tid = 0; tid < threadCount; ++tid) {
+        if (threadCount > 1) {
+            threads[tid]->join();
+        }
+    }
+
+    auto endTime = std::chrono::high_resolution_clock::now();
+    double duration = std::chrono::duration<double>(endTime-startTime).count();
+
+    std::cout << "w/l: (" << info.winCount  << ", " << info.lossCount << ")"
+              << " percentWin: " << static_cast<double>(info.winCount) / playoutCount * 100 << "%"
+              << " avgFloorReached: " << static_cast<double>(info.floorSum) / playoutCount << '\n';
+
+    std::cout << "threads: " << threadCount
+              << " playoutCount: " << playoutCount
+              << " elapsed: " << duration
+              << std::endl;
+}

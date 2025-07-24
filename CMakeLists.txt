@@ -68,3 +68,33 @@ target_link_directories(battle PRIVATE json::nlohmann_json)
 target_include_directories(battle PUBLIC battle)
 target_include_directories(battle PUBLIC include)
 target_include_directories(battle PUBLIC json/include)
+
+# Create battle-agent source list (minimal sources needed for battle agent)
+set(sts_battle_agent_SOURCES
+    "src/combat/Monster.cpp"
+    "src/combat/MonsterGroup.cpp"
+    "src/combat/MonsterMoveDamage.cpp"
+    "src/combat/MonsterSpecific.cpp"
+    "src/combat/Actions.cpp"
+    "src/combat/CardQueue.cpp"
+    "src/combat/CardInstance.cpp"
+    "src/game/Card.cpp"
+    "src/sim/SimHelpers.cpp"
+)
+
+add_executable(battle-agent
+    apps/battle-agent.cpp
+    battle/BattleContext2.cpp
+    battle/GameContext2.cpp
+    battle/CardManager2.cpp
+    battle/Game2.cpp
+    battle/Deck2.cpp
+    battle/Player2.cpp
+    battle/SimpleAgent2.cpp
+    battle/Action2.cpp
+    ${sts_battle_agent_SOURCES}
+)
+target_link_directories(battle-agent PRIVATE json::nlohmann_json)
+target_include_directories(battle-agent PUBLIC battle)
+target_include_directories(battle-agent PUBLIC include)
+target_include_directories(battle-agent PUBLIC json/include)

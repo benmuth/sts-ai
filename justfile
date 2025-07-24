@@ -116,6 +116,11 @@ build-battle:
     mkdir -p {{BUILD_DIR}}
     cd {{BUILD_DIR}} && cmake .. && make battle
 
+# Build only the battle-agent executable
+build-battle-agent:
+    mkdir -p {{BUILD_DIR}}
+    cd {{BUILD_DIR}} && cmake .. && make battle-agent
+
 # Validate fight JSON syntax
 validate-fight-json fight_json:
     @echo "Validating JSON syntax for {{fight_json}}..."

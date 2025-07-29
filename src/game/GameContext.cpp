@@ -145,10 +145,6 @@ void GameContext::initFromSave(const SaveFile &s) {
     shopRelicPool.insert(shopRelicPool.begin(), s.shop_relics.begin(), s.shop_relics.end());
     bossRelicPool.insert(bossRelicPool.begin(), s.boss_relics.begin(), s.boss_relics.end());
 
-
-//    std::cout << "monsterListSize: " << s.monster_list.size() << std::endl;
-//    std::cout << "eliteListSize: " << s.elite_monster_list.size() << std::endl;
-
     boss = s.boss_list[0];
     if (s.boss_list.size() > 1) {
         secondBoss = s.boss_list[1];
@@ -225,7 +221,6 @@ void GameContext::initFromSave(const SaveFile &s) {
 void GameContext::initRelicsFromSave(const SaveFile &s) {
     for (int i = 0; i < s.relics.size(); ++i) {
         auto r = s.relics[i];
-//        std::cout << getRelicName(r) << " " << s.relic_counters[i] << '\n';
 
         // todo lizard tail, and others
         switch (r) {

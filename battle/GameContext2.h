@@ -114,14 +114,8 @@ namespace sts {
         // Boss Room
         RelicId bossRelics[3];
 
-        // NeowOptions neowRewards;
-        // Rewards rewardsContainer;
-
         // from combats
         int stolenGold = 0;
-
-        // Shop Room
-        // Shop shop;
     };
 
 
@@ -159,24 +153,7 @@ namespace sts {
         Random shuffleRng;
         Random treasureRng;
 
-        // todo change these to fixed lists
-        // std::vector<Event> eventList;
-        // std::vector<Event> shrineList;
-        // std::vector<Event> specialOneTimeEventList;
-
-        // std::vector<RelicId> commonRelicPool;
-        // std::vector<RelicId> uncommonRelicPool;
-        // std::vector<RelicId> rareRelicPool;
-        // std::vector<RelicId> shopRelicPool;
-        // std::vector<RelicId> bossRelicPool;
-
         std::array<CardId, 35> colorlessCardPool = baseColorlessPool;
-
-        // int monsterListOffset = 0;
-        // fixed_list<MonsterEncounter, 16> monsterList;
-        // int eliteMonsterListOffset = 0;
-        // fixed_list<MonsterEncounter, 10> eliteMonsterList;
-        // MonsterEncounter secondBoss = MonsterEncounter::INVALID;
 
         // ********* player information *********
 
@@ -185,21 +162,10 @@ namespace sts {
         ScreenStateInfo info;
 
         Room lastRoom = Room::INVALID;
-        // Event curEvent = Event::INVALID;
         Room curRoom = Room::INVALID;
         MonsterEncounter boss = MonsterEncounter::INVALID;
 
-        // float monsterChance = 0.1f;
-        // float shopChance = 0.03f;
-        // float treasureChance = 0.02f;
-        // int potionChance = 0;
         int cardRarityFactor = 5;
-        // int shopRemoveCount = 0;
-        // bool speedrunPace = false; // todo load from save
-
-        // int curMapNodeX = -1;
-        // int curMapNodeY = -1;
-        // std::shared_ptr<Map> map = nullptr; // todo fix memory leak
 
         int act = 1;
         int ascension = 0;
@@ -217,10 +183,6 @@ namespace sts {
         RelicContainer relics;
         Deck deck;
 
-        // bool blueKey = false;
-        // bool greenKey = false;
-        // bool redKey = false;
-
         GameContextAction regainControlAction = nullptr;
 
         GameContext() = default;
@@ -230,20 +192,8 @@ namespace sts {
         void initRelicsFromSave(const SaveFile &s);
 
         // const methods
-        // [[nodiscard]] const MapNode& getCurMapNode() const;
         [[nodiscard]] int fractionMaxHp(float percent, HpType type=HpType::FLOOR) const;
         [[nodiscard]] bool hasRelic(RelicId r) const;
-        // [[nodiscard]] bool hasKey(Key key) const;
-
-        // [[nodiscard]] bool hasLessThanTwoCampfireRelics() const;
-        // [[nodiscard]] bool relicCanSpawn(RelicId relic, bool shopRoom) const;
-
-        // [[nodiscard]] bool canAddOneTimeEvent(Event shrine) const;
-        // [[nodiscard]] bool canAddEvent(Event event) const;
-
-        // initialization
-        // void populateMonsterList(const MonsterEncounter monsters[], const float weights[], int monstersSize, int numMonsters);
-        // void populateFirstStrongEnemy(const MonsterEncounter monsters[], const float weights[], int monstersSize);
 
         // room setup
         void enterBattle(MonsterEncounter encounter);
@@ -254,11 +204,6 @@ namespace sts {
         void obtainGold(int amount);
         void obtainPotion(Potion p);
 
-        // RelicId returnRandomRelic(RelicTier tier, bool shopRoom=false, bool fromFront=true);
-        // RelicId returnNonCampfireRelic(RelicTier tier, bool shopRoom=false);
-        // RelicId returnRandomScreenlessRelic(RelicTier tier, bool shopRoom=false);
-
-        // Card previewObtainCard(Card card);
         void relicsOnEnterRoom(Room room);
 
         CardRarity rollCardRarity(Room room);
@@ -269,22 +214,6 @@ namespace sts {
         CardId returnColorlessCard(CardRarity rarity);
         int getRandomPlayerPotionIdx();
         int getRandomPlayerNonBasicCardIdx();
-
-        // MonsterEncounter getMonsterForRoomCreation();
-        // MonsterEncounter getEliteForRoomCreation();
-
-        // void addPotionRewards(Rewards &r);
-        // CardReward createCardReward(Room room);
-        // CardReward createColorlessCardReward();
-
-        // Rewards createCombatReward();
-        // Rewards createEliteCombatReward();
-        // Rewards createBossCombatReward();
-
-        // Event getShrine(Random &eventRngCopy);
-        // Event getEvent(Random &eventRngCopy);
-        // Event generateEvent(Random eventRngCopy);
-        // Room getEventRoomOutcomeHelper(bool lastRoomWasShop);
 
         // actions
         void damagePlayer(int amount);
@@ -301,18 +230,10 @@ namespace sts {
         void discardPotionAtIdx(int idx);
 
 
-        // void openTreasureRoomChest();
-        // void selectScreenTransform();
-        // void openCombatRewardScreen(Rewards reward);
         void openCardSelectScreen(CardSelectScreenType type, int selectCount, bool initSelectCards=true);
 
         // interface methods
-        // void chooseBossRelic(int idx);
-        // void chooseEventOption(int idx);
         void chooseSelectCardScreenOption(int idx);
-        // void chooseCampfireOption(int idx);
-        // void chooseMatchAndKeepCards(int idx1, int idx2);
-        // void chooseTreasureRoomOption(bool openChest);
 
         void regainControl();
     };

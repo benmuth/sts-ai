@@ -16,6 +16,11 @@ namespace sts {
 }
 
 void BattleContext::init(const GameContext &gc, MonsterEncounter encounterToInit, bool burningElite) {
+    // Call the full version with default values
+    init(gc, encounterToInit, burningElite, 0, 1);
+}
+
+void BattleContext::init(const GameContext &gc, MonsterEncounter encounterToInit, bool burningElite, const int buffType, const int act) {
     undefinedBehaviorEvoked = false;
     haveUsedDiscoveryAction = false;
     seed = gc.seed;
@@ -52,7 +57,7 @@ void BattleContext::init(const GameContext &gc, MonsterEncounter encounterToInit
 
     monsters.init(*this, encounterToInit);
     if (burningElite) {
-        monsters.applyEmeraldEliteBuff(*this, gc.map->burningEliteBuff, gc.act);
+        monsters.applyEmeraldEliteBuff(*this, buffType, act);
     }
 
     player.cardDrawPerTurn = 5;

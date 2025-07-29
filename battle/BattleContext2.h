@@ -102,8 +102,8 @@ namespace sts {
 
 // ****************************************
 
-        void init(const GameContext &gc, MonsterEncounter encounterToInit, bool burningElite);
-
+        void init(const GameContext &gc, MonsterEncounter encounterToInit, bool burningElite = false);
+        void init(const GameContext &gc, MonsterEncounter encounterToInit, bool burningElite, int buffType, int act);
         void init(const GameContext &gc);
 
         void initRelics(RelicContainer relics, sts::Room curRoom, sts::Room prevRoom, int curHp, int maxHp);

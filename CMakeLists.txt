@@ -91,6 +91,7 @@ add_executable(battle-agent
     battle/Deck2.cpp
     battle/Player2.cpp
     battle/SimpleAgent2.cpp
+    battle/AutoClad.cpp
     battle/Action2.cpp
     ${sts_battle_agent_SOURCES}
 )

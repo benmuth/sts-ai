@@ -74,46 +74,6 @@ namespace sts {
         fixed_list<SelectScreenCard, Deck::MAX_SIZE> toSelectCards;
         fixed_list<SelectScreenCard,3> haveSelectedCards;
 
-        // Events
-        int eventData = 0;
-
-        int hpAmount0;
-        int hpAmount1;
-        int hpAmount2;
-
-        // Dead Adventurer
-        int phase;
-        std::array<int,3> rewards;
-
-        // Designer In-Spire
-        bool upgradeOne;
-        bool cleanUpIsRemoveCard;
-
-        // Treasure Room
-        bool haveGold = false;
-        ChestSize chestSize;
-        RelicTier tier;
-
-        // World of Goop
-        int goldLoss;
-
-        // We Meet Again Event
-        int potionIdx;
-        int gold;
-        int cardIdx;
-
-        // N'loth
-        int relicIdx0;
-        int relicIdx1;
-
-        // Falling
-        int skillCardDeckIdx;
-        int powerCardDeckIdx;
-        int attackCardDeckIdx;
-
-        // Boss Room
-        RelicId bossRelics[3];
-
         // from combats
         int stolenGold = 0;
     };

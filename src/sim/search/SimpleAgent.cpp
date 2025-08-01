@@ -358,7 +358,7 @@ void search::SimpleAgent::playout(GameContext &gc) {
             continue;
         }
 
-        stepOutOfCombat(gc);
+        // stepOutOfCombat(gc);
     }
 }
 

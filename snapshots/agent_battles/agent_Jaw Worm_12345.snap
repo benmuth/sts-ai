@@ -1,0 +1,14 @@
+=== COMBAT: "agent_Jaw Worm_12345" ===
+Seed: 12345 | Ascension: 0 | Floor: 1
+
+Initial State:
+  Player: 80/80 HP, 3 Energy
+  Enemy: Jaw Worm (41 HP)
+  Hand: Bash(2), Strike(1), Strike(1), Strike(1), Defend(1)
+  Deck: 5 cards remaining
+
+Final Result:
+  Outcome: PLAYER_VICTORY
+  Player HP: 72/80
+  Turns: 4
+  RNG Counters: shuffle=3, cardRandom=0, misc=0

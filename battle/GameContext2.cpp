@@ -35,7 +35,6 @@ GameContext::GameContext(CharacterClass cc, std::uint64_t seed, int ascension)
     potionRng(seed),
     cardRng(seed),
     cardRandomRng(seed),
-    merchantRng(seed),
     monsterRng(seed),
     shuffleRng(seed),
     miscRng(seed),

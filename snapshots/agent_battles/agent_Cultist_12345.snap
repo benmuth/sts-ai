@@ -1,0 +1,14 @@
+=== COMBAT: "agent_Cultist_12345" ===
+Seed: 12345 | Ascension: 0 | Floor: 1
+
+Initial State:
+  Player: 80/80 HP, 3 Energy
+  Enemy: Cultist (52 HP)
+  Hand: Bash(2), Strike(1), Strike(1), Strike(1), Defend(1)
+  Deck: 5 cards remaining
+
+Final Result:
+  Outcome: PLAYER_VICTORY
+  Player HP: 75/80
+  Turns: 3
+  RNG Counters: shuffle=2, cardRandom=0, misc=0

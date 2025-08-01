@@ -13,6 +13,7 @@
 #include "../../include/sim/search/Action.h"
 #include "../../include/game/Card.h"
 #include "../../json/single_include/nlohmann/json.hpp"
+#include "../../include/utils/scenarios.h"
 
 #define BATTLE_ONLY false
 
@@ -47,7 +48,7 @@ public:
                  << " | Floor: " << scenario["floor"] << std::endl << std::endl;
         
         // Setup game context from scenario
-        GameContext gc = createGameContextFromScenario(scenario);
+        GameContext gc = sts::utils::createGameContextFromScenario(scenario);
         
         // Initialize battle
         BattleContext bc;
@@ -65,46 +66,6 @@ public:
     }
     
 private:
-    GameContext createGameContextFromScenario(const json& scenario) {
-        auto seed = scenario["seed"].get<std::uint64_t>();
-        auto ascension = scenario["ascension"].get<int>();
-        
-        GameContext gc(CharacterClass::IRONCLAD, seed, ascension);
-        
-        // Set player stats
-        gc.curHp = scenario["initial_state"]["player_hp"];
-        gc.maxHp = scenario["initial_state"]["player_max_hp"];
-        
-        // Set encounter
-        std::string encounterStr = scenario["initial_state"]["encounter"];
-
-        int index = 0;
-        for (const char* name : monsterEncounterEnumNames) {
-            if (name == encounterStr) {
-                break;
-            }
-            ++index;
-          }
-
-        if (index >= 0 && index < sizeof(monsterEncounterEnumNames)/sizeof(monsterEncounterEnumNames[0])) {
-             gc.info.encounter = MonsterEncounter(index);
-        }
-
-        
-        // Clear deck and add cards from scenario
-        gc.deck.cards.clear();
-        for (const auto& cardStr : scenario["initial_state"]["deck"]) {
-            if (cardStr == "STRIKE") {
-                gc.deck.obtainRaw(Card(CardId::STRIKE_RED));
-            } else if (cardStr == "DEFEND") {
-                gc.deck.obtainRaw(Card(CardId::DEFEND_RED));
-            } else if (cardStr == "BASH") {
-                gc.deck.obtainRaw(Card(CardId::BASH));
-            }
-        }
-        
-        return gc;
-    }
     
     void formatInitialState(const BattleContext& bc, const json& scenario) {
         snapshot << "Initial State:" << std::endl;
@@ -114,7 +75,7 @@ private:
         // Format monster
         if (bc.monsters.monsterCount > 0) {
             const auto& monster = bc.monsters.arr[0];
-            snapshot << "  Enemy: " << getMonsterName(monster.id) 
+            snapshot << "  Enemy: " << sts::utils::getMonsterName(monster.id)
                      << " (" << monster.curHp << " HP)";
             
             // Add intent if available
@@ -188,7 +149,7 @@ private:
         if (bc.monsters.monsterCount > 0) {
             const auto& monster = bc.monsters.arr[0];
             if (monster.isAlive()) {
-                snapshot << "  " << getMonsterName(monster.id) 
+                snapshot << "  " << sts::utils::getMonsterName(monster.id)
                          << " attacks → Player (6 damage)" << std::endl; // Simplified
                 snapshot << "  Player: " << bc.player.curHp << "/" << bc.player.maxHp 
                          << " HP" << std::endl;
@@ -271,9 +232,9 @@ private:
                 snapshot << " → Played " << getCardName(cardId);
 
                 // Show damage/effects if applicable
-                if (isAttackCard(cardId)) {
+                if (sts::utils::isAttackCard(cardId)) {
                     snapshot << " (damage dealt)";
-                } else if (isDefendCard(cardId)) {
+                } else if (sts::utils::isDefendCard(cardId)) {
                     snapshot << " (gained block)";
                 }
                 snapshot << std::endl;
@@ -292,34 +253,7 @@ private:
         }
     }
 
-    // Helper methods for formatting
-    bool isAttackCard(CardId id) {
-        return id == CardId::STRIKE_RED || id == CardId::BASH ||
-               id == CardId::STRIKE_GREEN || id == CardId::STRIKE_BLUE || id == CardId::STRIKE_PURPLE;
-    }
-
-    bool isDefendCard(CardId id) {
-        return id == CardId::DEFEND_RED || id == CardId::DEFEND_GREEN ||
-               id == CardId::DEFEND_BLUE || id == CardId::DEFEND_PURPLE;
-    }
-
-    std::string getCardName(CardId id) {
-        switch (id) {
-            case CardId::STRIKE_RED: return "Strike";
-            case CardId::DEFEND_RED: return "Defend";
-            case CardId::BASH: return "Bash";
-            default: return "Unknown";
-        }
-    }
-    
-    std::string getMonsterName(MonsterId id) {
-        switch (id) {
-            case MonsterId::CULTIST: return "Cultist";
-            default: return "Unknown";
-        }
-    }
-    
-    std::string getMoveName(MonsterMoveId move) {
+     std::string getMoveName(MonsterMoveId move) {
         return "Attack"; // Simplified for now
     }
 };

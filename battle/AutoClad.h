@@ -12,6 +12,7 @@
 #include "BattleContext2.h"
 #include "Action2.h"
 #include "combat/CardInstance.h"
+#include "SimpleAgent2.h"
 
 namespace sts {
 
@@ -36,9 +37,12 @@ void myGetBestCardToPlay();
 // Agent runner functions
 void myAgentMtRunner(SimpleAgentInfo *info);
 
+// TODO: add name printing method!
+
 // Simple agent with experimental methods
-struct AutoClad {
-    static void myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print);
+struct AutoClad : search::SimpleAgent {
+    // static void myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print);
+    void stepBattleCardPlay(BattleContext &bc) override;
 };
 
 } // namespace search

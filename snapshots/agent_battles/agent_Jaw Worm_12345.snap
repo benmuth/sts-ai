@@ -8,7 +8,7 @@ Initial State:
   Deck: 5 cards remaining
 
 Final Result:
-  Outcome: PLAYER_VICTORY
-  Player HP: 72/80
-  Turns: 4
-  RNG Counters: shuffle=3, cardRandom=0, misc=0
+  Outcome: PLAYER_LOSS
+  Player HP: 0/80
+  Turns: 8
+  RNG Counters: shuffle=5, cardRandom=0, misc=0

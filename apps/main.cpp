@@ -34,7 +34,5 @@ int main() {
   BattleContext bc;
   bc.init(gc, monster);
 
-  search::SimpleAgent::myRunAgentMt(1, 1, 1, true);
-
   return 0;
 }

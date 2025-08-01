@@ -1,16 +1,20 @@
 #include <iostream>
 #include <string>
-#include <filesystem>
 
 #include "../battle/BattleContext2.h"
 #include "../battle/GameContext2.h"
 #include "../battle/SimpleAgent2.h"
-#include "../include/constants/MonsterEncounters.h"
+#include "../battle/AutoClad.h"
 #include "../include/utils/scenarios.h"
 
 using namespace sts;
 
-void runAgentOnScenario(const GameContext& gc, bool printDetails = true, bool generateSnapshot = false, const std::string& snapshotDir = "") {
+enum class Agent {
+  simple,
+  autoclad,
+};
+
+void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = true, bool generateSnapshot = false, const std::string& snapshotDir = "") {
     std::cout << "Running agent on scenario with seed: " << gc.seed << std::endl;
 
     // Initialize battle context with the scenario's encounter
@@ -20,11 +24,19 @@ void runAgentOnScenario(const GameContext& gc, bool printDetails = true, bool ge
     // Copy for snapshot (capture initial state)
     BattleContext finalBc = initialBc;
 
+    sts::search::AutoClad autoclad;
+    sts::search::SimpleAgent simple_agent;
+
+    search::SimpleAgent& agent = (a==Agent::simple ? simple_agent : autoclad);
+
     // Create and configure the agent
-    search::SimpleAgent agent;
+    // sts::search::SimpleAgent agent;
+
     agent.print = printDetails;
 
     if (printDetails) {
+        // TODO: print name of agent
+        // std::cout << " AGENT: " << " "
         std::cout << "  Initial State:" << std::endl;
         std::cout << "    Encounter: " << static_cast<int>(gc.info.encounter) << std::endl;
         std::cout << "    Player HP: " << initialBc.player.curHp << "/" << initialBc.player.maxHp << std::endl;
@@ -94,7 +106,7 @@ int main(int argc, char* argv[]) {
 
     // Run SimpleAgent on each scenario
     for (const auto& gc : scenarios) {
-        runAgentOnScenario(gc, true, generateSnapshots, snapshotDir);
+        runAgentOnScenario(Agent::autoclad, gc, true, generateSnapshots, snapshotDir);
     }
 
     std::cout << "All scenarios completed!" << std::endl;

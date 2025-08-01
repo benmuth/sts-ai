@@ -1286,14 +1286,14 @@ void agentMtRunner(SimpleAgentInfo *info) {
     }
 }
 
-void search::SimpleAgent::myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {    SimpleAgentInfo info;
-    info.curSeed = startSeed;
-    info.seedStart = startSeed;
-    info.seedEnd = startSeed + playoutCount;
-    info.shouldPrint = print;
+// void search::SimpleAgent::myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {    SimpleAgentInfo info;
+//     info.curSeed = startSeed;
+//     info.seedStart = startSeed;
+//     info.seedEnd = startSeed + playoutCount;
+//     info.shouldPrint = print;
 
-    myAgentMtRunner(&info);
-};
+//     myAgentMtRunner(&info);
+// };
 
 void search::SimpleAgent::runAgentsMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {
     auto startTime = std::chrono::high_resolution_clock::now();

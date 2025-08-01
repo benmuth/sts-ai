@@ -45,7 +45,7 @@ namespace sts::search {
         static fixed_list<int,16> getBestMapPathForWeights(const Map &m, const int *weights);
         static void runAgentsMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print);
 
-        static void myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print);
+        // static void myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print);
     };
 
 }

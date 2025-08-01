@@ -25,65 +25,66 @@ typedef struct {
     CardInstance card;
 } State;
 
+void search::AutoClad::stepBattleCardPlay(BattleContext &bc)  {
+    takeAction(bc, Action(ActionType::END_TURN));
+    // std::cerr << ""
+    // takeAction(bc, Action(ActionType::CARD, 0));
 
-void search::myGetBestCardToPlay() {
-    GameContext gc = GameContext(CharacterClass::IRONCLAD, 0, 0);
+    // GameContext gc = GameContext(CharacterClass::IRONCLAD, 0, 0);
+    // bc.init(gc, MonsterEncounter::JAW_WORM, false);
 
-    BattleContext bc;
-    bc.init(gc, MonsterEncounter::JAW_WORM, false);
-
-    int seed_sample_count = 10;
+    // int seed_sample_count = 10;
 
     // enumerate actions
-    std::deque<State> states;
-    for (int i = 0; i < std::size(bc.cards.hand); ++i) {
-        if (bc.cards.hand[i].id == CardId::INVALID) break;
-        auto new_bc = bc;
-        // auto action = search::Action(sts::search::ActionType::CARD, i);
+    // std::deque<State> states;
+    // for (int i = 0; i < std::size(bc.cards.hand); ++i) {
+    //     if (bc.cards.hand[i].id == CardId::INVALID) break;
+    //     auto new_bc = bc;
+    //     // auto action = search::Action(sts::search::ActionType::CARD, i);
 
-        State state = {new_bc, bc.cards.hand[i]};
-        states.push_front(state);
-    }
+    //     State state = {new_bc, bc.cards.hand[i]};
+    //     states.push_front(state);
+    // }
     // sort actions by heuristic
 
-    for (int i = 0; i < seed_sample_count; ++i) {
+    // for (int i = 0; i < seed_sample_count; ++i) {
 
-        // start dfs with first action
-        while (!states.empty()) {
-            auto state = states.front();
-            states.pop_front();
+    //     // start dfs with first action
+    //     while (!states.empty()) {
+    //         auto state = states.front();
+    //         states.pop_front();
 
-            std::cout << "state: " << (state.card.getName()) << "\n";
-            std::cout << "hand: ";
-            bool first = true;
-            for (const auto& element : state.bc.cards.hand) {
-                if (!first) std::cout << ", ";
-                std::cout << element;
-                first = false;
-            }
-            std::cout << "\n";
-            // execute action
-            if (!state.card.requiresTarget()) {
-                auto *bestCard = std::find(std::begin(state.bc.cards.hand), std::end(state.bc.cards.hand), &state.card);
-                auto bestCardIdx = std::distance(std::begin(state.bc.cards.hand), bestCard);
+    //         std::cout << "state: " << (state.card.getName()) << "\n";
+    //         std::cout << "hand: ";
+    //         bool first = true;
+    //         for (const auto& element : state.bc.cards.hand) {
+    //             if (!first) std::cout << ", ";
+    //             std::cout << element;
+    //             first = false;
+    //         }
+    //         std::cout << "\n";
+    //         // execute action
+    //         if (!state.card.requiresTarget()) {
+    //             auto *bestCard = std::find(std::begin(state.bc.cards.hand), std::end(state.bc.cards.hand), &state.card);
+    //             auto bestCardIdx = std::distance(std::begin(state.bc.cards.hand), bestCard);
 
-                auto action = search::Action(sts::search::ActionType::CARD, bestCardIdx);
-                action.execute(state.bc);
-            }
+    //             auto action = search::Action(sts::search::ActionType::CARD, bestCardIdx);
+    //             action.execute(state.bc);
+    //         }
 
-            // push new states
-            for (int i = 0; i < std::size(state.bc.cards.hand); ++i) {
-                if (state.bc.cards.hand[i].id == CardId::INVALID) break;
-                auto new_bc = state.bc;
-                // auto action = search::Action(sts::search::ActionType::CARD, i);
+    //         // push new states
+    //         for (int i = 0; i < std::size(state.bc.cards.hand); ++i) {
+    //             if (state.bc.cards.hand[i].id == CardId::INVALID) break;
+    //             auto new_bc = state.bc;
+    //             // auto action = search::Action(sts::search::ActionType::CARD, i);
 
-                State state = {new_bc, state.bc.cards.hand[i]};
-                states.push_front(state);
-            }
+    //             State state = {new_bc, state.bc.cards.hand[i]};
+    //             states.push_front(state);
+    //         }
 
-            // eval action
-        }
-    }
+    //         // eval action
+    //     }
+    // }
 
     // __dfs__ (with pruning)
 }
@@ -122,12 +123,12 @@ void search::myAgentMtRunner(SimpleAgentInfo *info) {
     }
 }
 
-void search::AutoClad::myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {
-    SimpleAgentInfo info;
-    info.curSeed = startSeed;
-    info.seedStart = startSeed;
-    info.seedEnd = startSeed + playoutCount;
-    info.shouldPrint = print;
+// void search::AutoClad::myRunAgentMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print) {
+//     SimpleAgentInfo info;
+//     info.curSeed = startSeed;
+//     info.seedStart = startSeed;
+//     info.seedEnd = startSeed + playoutCount;
+//     info.shouldPrint = print;
 
-    myAgentMtRunner(&info);
-}
+//     myAgentMtRunner(&info);
+// }

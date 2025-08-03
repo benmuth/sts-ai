@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <cctype>
 
 #include "../battle/BattleContext2.h"
 #include "../battle/GameContext2.h"
@@ -26,8 +28,42 @@ std::string getAgentName(Agent a) {
     }
 }
 
-void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = true, bool generateSnapshot = false, const std::string& snapshotDir = "") {
-    std::cout << "Running agent on scenario with seed: " << gc.seed << std::endl;
+std::vector<GameContext> filterScenarios(const std::vector<GameContext>& allScenarios, const std::vector<std::string>& filters) {
+    // If no filters specified or "all" is specified, return all scenarios
+    if (filters.empty() || (filters.size() == 1 && filters[0] == "all")) {
+        return allScenarios;
+    }
+
+    std::vector<GameContext> filteredScenarios;
+    for (const auto& gc : allScenarios) {
+        // Get the encounter name for comparison
+        std::string encounterName = monsterEncounterStrings[static_cast<int>(gc.info.encounter)];
+
+        // Convert encounter name to lowercase for case-insensitive matching
+        std::string lowerEncounterName = encounterName;
+        std::transform(lowerEncounterName.begin(), lowerEncounterName.end(), lowerEncounterName.begin(), ::tolower);
+
+        // Check if this scenario matches any of the filters
+        for (const auto& filter : filters) {
+            std::string lowerFilter = filter;
+            std::transform(lowerFilter.begin(), lowerFilter.end(), lowerFilter.begin(), ::tolower);
+
+            // Match by encounter name (with spaces replaced by underscores for command line friendliness)
+            std::string underscoreEncounterName = lowerEncounterName;
+            std::replace(underscoreEncounterName.begin(), underscoreEncounterName.end(), ' ', '_');
+
+            if (lowerFilter == underscoreEncounterName || lowerFilter == lowerEncounterName) {
+                filteredScenarios.push_back(gc);
+                break; // Don't add the same scenario multiple times
+            }
+        }
+    }
+
+    return filteredScenarios;
+}
+
+void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = false, bool generateSnapshot = false, const std::string& snapshotDir = "") {
+    std::cout << "Running agent on scenario " << static_cast<int>(gc.info.encounter) << " with seed: " << gc.seed << std::endl;
 
     // Initialize battle context with the scenario's encounter
     BattleContext initialBc;
@@ -44,8 +80,7 @@ void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = true
     // Create and configure the agent
     // sts::search::SimpleAgent agent;
 
-    // agent.print = printDetails;
-    agent.print = false;
+    agent.print = printDetails;
 
     if (printDetails) {
         std::cout << "  AGENT: " << getAgentName(a) << std::endl;
@@ -96,22 +131,42 @@ void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = true
 int main(int argc, char* argv[]) {
     bool generateSnapshots = false;
     std::string snapshotDir = "data/agent_battles";
+    std::vector<std::string> scenarioFilters;
 
-    // Check for --snapshot flag
+    // Parse command line arguments
     for (int i = 1; i < argc; ++i) {
-        if (std::string(argv[i]) == "--snapshot") {
+        std::string arg = argv[i];
+
+        if (arg == "--snapshot") {
             generateSnapshots = true;
             if (i + 1 < argc && argv[i + 1][0] != '-') {
                 snapshotDir = argv[i + 1];
                 ++i; // Skip the directory argument
             }
+        } else if (arg.length() > 11 && arg.substr(0, 11) == "--scenario=") {
+            std::string scenarioValue = arg.substr(11); // Remove "--scenario="
+            scenarioFilters.push_back(scenarioValue);
         }
     }
 
     // Load all scenarios from the scenarios directory
-    std::vector<GameContext> scenarios = sts::utils::loadScenariosFromDirectory("battle/scenarios/");
+    std::vector<GameContext> allScenarios = sts::utils::loadScenariosFromDirectory("battle/scenarios/");
 
-    // std::cout << "Loaded " << scenarios.size() << " scenarios" << std::endl;
+    // Filter scenarios based on command line arguments
+    std::vector<GameContext> scenarios = filterScenarios(allScenarios, scenarioFilters);
+
+    std::cout << "Loaded " << allScenarios.size() << " total scenarios";
+    if (!scenarioFilters.empty()) {
+        std::cout << ", filtered to " << scenarios.size() << " scenarios";
+        std::cout << " (filters: ";
+        for (size_t i = 0; i < scenarioFilters.size(); ++i) {
+            if (i > 0) std::cout << ", ";
+            std::cout << scenarioFilters[i];
+        }
+        std::cout << ")";
+    }
+    std::cout << std::endl;
+
     if (generateSnapshots) {
         std::cout << "Snapshots will be written to: " << snapshotDir << std::endl;
     }

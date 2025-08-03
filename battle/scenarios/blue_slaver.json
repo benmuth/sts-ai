@@ -1,0 +1,39 @@
+{
+  "name": "Blue Slaver",
+  "description": "From https://www.reddit.com/r/slaythespire/comments/10bpudl/slaybycomment_season_2_day_29_weve_had_one_slaver/",
+  "ascension": 20,
+  "floor": 12,
+  "initial_state": {
+    "player_hp": 60,
+    "player_max_hp": 75,
+    "character_class": "IRONCLAD",
+    "encounter": "BLUE_SLAVER",
+    "deck": [
+      "SHOCKWAVE+",
+      "STRIKE",
+      "STRIKE",
+      "DEFEND",
+      "STRIKE",
+      "CORRUPTION",
+      "BASH",
+      "DEFEND",
+      "FEEL_NO_PAIN",
+      "STRIKE",
+      "DEFEND",
+      "SPOT_WEAKNESS+",
+      "ASCENDERS_BANE",
+      "DEFEND",
+      "STRIKE",
+      "SHRUG_IT_OFF"
+    ],
+    "relics": [
+      "POTION_BELT",
+      "STONE_CALENDAR",
+      "FROZEN_EYE",
+      "BLUE_CANDLE"
+    ],
+    "potions": [
+      "SWIFT_POTION"
+    ]
+  }
+}

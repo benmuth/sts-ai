@@ -1,0 +1,32 @@
+{
+  "name": "Large Slime",
+  "description": "From https://www.reddit.com/r/slaythespire/comments/zz4ttl/slaybycomment_season_2_day_14_oops_we_got_stoned/",
+  "ascension": 20,
+  "floor": 5,
+  "initial_state": {
+    "player_hp": 52,
+    "player_max_hp": 75,
+    "character_class": "IRONCLAD",
+    "encounter": "LARGE_SLIME",
+    "deck": [
+      "ASCENDERS_BANE",
+      "STRIKE",
+      "DEFEND",
+      "DEFEND",
+      "SPOT_WEAKNESS",
+      "BASH",
+      "DEFEND",
+      "DEFEND",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "SHOCKWAVE"
+    ],
+    "relics": [
+      "POTION_BELT",
+      "STONE_CALENDAR"
+    ],
+    "potions": []
+  }
+}

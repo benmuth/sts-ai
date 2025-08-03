@@ -1,0 +1,40 @@
+{
+  "name": "Gremlin Nob",
+  "description": "From https://www.reddit.com/r/slaythespire/comments/10egts5/slaybycomment_season_2_day_32_fuck_how_should_we/",
+  "ascension": 20,
+  "floor": 13,
+  "initial_state": {
+    "player_hp": 60,
+    "player_max_hp": 75,
+    "character_class": "IRONCLAD",
+    "encounter": "GREMLIN_NOB",
+    "deck": [
+      "DEFEND",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "CORRUPTION",
+      "BASH",
+      "STRIKE",
+      "FEEL_NO_PAIN",
+      "STRIKE",
+      "DEFEND",
+      "ASCENDERS_BANE",
+      "ANGER",
+      "DEFEND",
+      "DEFEND",
+      "SHRUG_IT_OFF",
+      "SPOT_WEAKNESS+",
+      "SHOCKWAVE+"
+    ],
+    "relics": [
+      "POTION_BELT",
+      "STONE_CALENDAR",
+      "FROZEN_EYE",
+      "BLUE_CANDLE"
+    ],
+    "potions": [
+      "SWIFT_POTION"
+    ]
+  }
+}

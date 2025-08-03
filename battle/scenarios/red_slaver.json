@@ -1,0 +1,38 @@
+{
+  "name": "Red Slaver",
+  "description": "From https://www.reddit.com/r/slaythespire/comments/108dy5d/slaybycomment_season_2_day_25_slaver_i_barely/",
+  "ascension": 20,
+  "floor": 11,
+  "initial_state": {
+    "player_hp": 56,
+    "player_max_hp": 75,
+    "character_class": "IRONCLAD",
+    "encounter": "RED_SLAVER",
+    "deck": [
+      "STRIKE",
+      "SPOT_WEAKNESS+",
+      "SHRUG_IT_OFF",
+      "DEFEND",
+      "STRIKE",
+      "BASH",
+      "DEFEND",
+      "DEFEND",
+      "STRIKE",
+      "SHOCKWAVE+",
+      "FEEL_NO_PAIN",
+      "DEFEND",
+      "STRIKE",
+      "ASCENDERS_BANE",
+      "STRIKE"
+    ],
+    "relics": [
+      "POTION_BELT",
+      "STONE_CALENDAR",
+      "FROZEN_EYE",
+      "BLUE_CANDLE"
+    ],
+    "potions": [
+      "SWIFT_POTION"
+    ]
+  }
+}

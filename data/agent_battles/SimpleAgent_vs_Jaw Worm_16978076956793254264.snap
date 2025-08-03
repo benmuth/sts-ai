@@ -1,0 +1,15 @@
+=== COMBAT: "SimpleAgent_vs_Jaw Worm_16978076956793254264" ===
+Agent: SimpleAgent
+Seed: 16978076956793254264 | Ascension: 20 | Floor: 0
+
+Initial State:
+  Player: 58/75 HP, 3 Energy
+  Enemy: Jaw Worm (45 HP)
+  Hand: Ascender's Bane(-3), Strike(1), Bash(2), Spot Weakness(1), Strike(1)
+  Deck: 7 cards remaining
+
+Final Result:
+  Outcome: PLAYER_VICTORY
+  Player HP: 44/75
+  Turns: 2
+  RNG Counters: shuffle=2, cardRandom=0, misc=0

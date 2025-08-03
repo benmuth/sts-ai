@@ -1,0 +1,33 @@
+{
+  "name": "Two Fungi Beasts",
+  "description": "From https://www.reddit.com/r/slaythespire/comments/1035sss/the_noattackcard_challenge_season_2_day_19_only/",
+  "ascension": 20,
+  "floor": 7,
+  "initial_state": {
+    "player_hp": 50,
+    "player_max_hp": 75,
+    "character_class": "IRONCLAD",
+    "encounter": "TWO_FUNGI_BEASTS",
+    "deck": [
+      "DEFEND",
+      "DEFEND",
+      "SPOT_WEAKNESS",
+      "SHRUG_IT_OFF",
+      "STRIKE",
+      "STRIKE",
+      "ASCENDERS_BANE",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "DEFEND",
+      "DEFEND",
+      "BASH",
+      "SHOCKWAVE"
+    ],
+    "relics": [
+      "POTION_BELT",
+      "STONE_CALENDAR"
+    ],
+    "potions": []
+  }
+}

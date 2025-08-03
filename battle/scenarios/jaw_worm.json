@@ -1,0 +1,30 @@
+{
+  "name": "Jaw Worm",
+  "description": "From https://www.reddit.com/r/slaythespire/comments/zvpzvj/slaybycomment_season_2_day_10_skip_frontloaded/",
+  "ascension": 20,
+  "floor": 3,
+  "initial_state": {
+    "player_hp": 58,
+    "player_max_hp": 75,
+    "character_class": "IRONCLAD",
+    "encounter": "JAW_WORM",
+    "deck": [
+      "ASCENDERS_BANE",
+      "BASH",
+      "STRIKE",
+      "DEFEND",
+      "STRIKE",
+      "DEFEND",
+      "DEFEND",
+      "DEFEND",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "SPOT_WEAKNESS"
+    ],
+    "relics": [
+      "POTION_BELT"
+    ],
+    "potions": []
+  }
+}

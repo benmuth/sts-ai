@@ -1,0 +1,15 @@
+=== COMBAT: "SimpleAgent_vs_Hexaghost_2709297576926039318" ===
+Agent: SimpleAgent
+Seed: 2709297576926039318 | Ascension: 20 | Floor: 0
+
+Initial State:
+  Player: 27/75 HP, 3 Energy
+  Enemy: Hexaghost (264 HP)
+  Hand: Strike(1), Whirlwind(-1), Strike(1), Defend(1), Shrug It Off(1)
+  Deck: 12 cards remaining
+
+Final Result:
+  Outcome: PLAYER_LOSS
+  Player HP: 0/75
+  Turns: 6
+  RNG Counters: shuffle=3, cardRandom=0, misc=0

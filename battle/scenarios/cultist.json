@@ -1,0 +1,28 @@
+{
+  "name": "Two Louse",
+  "description": "From https://www.reddit.com/r/slaythespire/comments/ztjoau/slaybycomment_season_2_day_7_caw_how_should_we/",
+  "ascension": 20,
+  "floor": 2,
+  "initial_state": {
+    "player_hp": 64,
+    "player_max_hp": 75,
+    "character_class": "IRONCLAD",
+    "encounter": "CULTIST",
+    "deck": [
+      "STRIKE",
+      "DEFEND",
+      "DEFEND",
+      "DEFEND",
+      "DEFEND",
+      "BASH",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "ASCENDERS_BANE"
+    ],
+    "relics": ["POTION_BELT"],
+    "potions": []
+  }
+}
+

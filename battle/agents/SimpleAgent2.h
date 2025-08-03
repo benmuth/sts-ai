@@ -5,9 +5,9 @@
 #ifndef STS_LIGHTSPEED_SIMPLEAGENT_H
 #define STS_LIGHTSPEED_SIMPLEAGENT_H
 
-#include "GameContext2.h"
-#include "Action2.h"
-#include "sim/search/GameAction.h"
+#include "../GameContext2.h"
+#include "../Action2.h"
+// #include "sim/search/GameAction.h"
 
 // Forward declarations to avoid conflicts
 namespace sts {
@@ -15,21 +15,6 @@ namespace sts {
 }
 
 namespace sts::search {
-
-     // class SimpleAgent {
-     //  public:
-     //      virtual ~SimpleAgent() = default;  // Always have virtual destructor
-
-     //      void stepBattleCardPlay(BattleContext &bc);
-     //      // Pure virtual functions = interface contract
-     //      // virtual void playoutBattle(BattleContext& bc) = 0;
-
-     //      // Optional: concrete methods that use the interface
-     //      // void runBattle(const GameContext& gc) {
-     //      //     playoutBattle(bc);  // Calls derived implementation
-     //      // }
-     //  };
-
 
     struct SimpleAgent {
 
@@ -50,18 +35,11 @@ namespace sts::search {
         void takeAction(BattleContext &bc, Action a);
         void playoutBattle(BattleContext &bc);
 
+        // stepBattleCardPlay is the function that chooses the card to play
         virtual void stepBattleCardPlay(BattleContext &bc);
         void stepBattleCardSelect(BattleContext &bc);
 
-        // void stepOutOfCombat(GameContext &gc);
-        // void stepEventScreen(sts::GameContext &gc);
-        // void stepRestScreen(GameContext &gc);
-        // void stepRewardsScreen(GameContext &gc);
-        // void stepCardReward(GameContext &gc);
-        // void stepShopScreen(GameContext &gc);
-
         bool playPotion(BattleContext &bc);
-        // static fixed_list<int,16> getBestMapPathForWeights(const Map &m, const int *weights);
         static void runAgentsMt(int threadCount, std::uint64_t startSeed, int playoutCount, bool print);
     };
 

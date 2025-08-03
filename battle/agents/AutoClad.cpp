@@ -11,11 +11,11 @@
 #include <chrono>
 
 #include "AutoClad.h"
-#include "GameContext2.h"
-#include "BattleContext2.h"
+#include "../GameContext2.h"
+#include "../BattleContext2.h"
 #include "SimpleAgent2.h"
-#include "constants/CharacterClasses.h"
-#include "constants/MonsterEncounters.h"
+#include "../../include/constants/CharacterClasses.h"
+#include "../../include/constants/MonsterEncounters.h"
 
 using namespace sts;
 

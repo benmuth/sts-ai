@@ -3,6 +3,8 @@
 /.idea/
 CMakeFiles
 json/
+.cache/
+.claude/
 
 # Build artifacts (keep compile_commands.json)
 build/*

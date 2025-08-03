@@ -1,0 +1,27 @@
+{
+  "name": "Two Louse",
+  "description": "From https://www.reddit.com/r/slaythespire/comments/zpw1rl/slaybycomment_season_2_day_3_damn_these_louses/",
+  "ascension": 20,
+  "floor": 1,
+  "initial_state": {
+    "player_hp": 66,
+    "player_max_hp": 75,
+    "character_class": "IRONCLAD",
+    "encounter": "TWO_LOUSE",
+    "deck": [
+      "STRIKE",
+      "STRIKE",
+      "STRIKE",
+      "DEFEND",
+      "BASH",
+      "DEFEND",
+      "DEFEND",
+      "DEFEND",
+      "STRIKE",
+      "STRIKE",
+      "ASCENDERS_BANE"
+    ],
+    "relics": ["POTION_BELT"],
+    "potions": []
+  }
+}

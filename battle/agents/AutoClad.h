@@ -8,10 +8,10 @@
 #include <cstdint>
 #include <deque>
 #include <mutex>
-#include "GameContext2.h"
-#include "BattleContext2.h"
-#include "Action2.h"
-#include "combat/CardInstance.h"
+#include "../GameContext2.h"
+#include "../BattleContext2.h"
+#include "../Action2.h"
+#include "../../include/combat/CardInstance.h"
 #include "SimpleAgent2.h"
 
 namespace sts {

@@ -54,6 +54,47 @@ inline GameContext createGameContextFromScenario(const nlohmann::json& scenario)
     return gc;
 }
 
+// Overload that takes a seed parameter instead of reading from JSON
+inline GameContext createGameContextFromScenario(const nlohmann::json& scenario, std::uint64_t seed) {
+    auto ascension = scenario["ascension"].get<int>();
+    
+    GameContext gc(CharacterClass::IRONCLAD, seed, ascension);
+    
+    // Set player stats
+    gc.curHp = scenario["initial_state"]["player_hp"];
+    gc.maxHp = scenario["initial_state"]["player_max_hp"];
+    
+    // Set encounter
+    std::string encounterStr = scenario["initial_state"]["encounter"];
+
+    int index = 0;
+    for (const char* name : monsterEncounterEnumNames) {
+        if (name == encounterStr) {
+            break;
+        }
+        ++index;
+      }
+
+    if (index >= 0 && index < sizeof(monsterEncounterEnumNames)/sizeof(monsterEncounterEnumNames[0])) {
+         gc.info.encounter = MonsterEncounter(index);
+    }
+
+    
+    // Clear deck and add cards from scenario
+    gc.deck.cards.clear();
+    for (const auto& cardStr : scenario["initial_state"]["deck"]) {
+        if (cardStr == "STRIKE") {
+            gc.deck.obtainRaw(Card(CardId::STRIKE_RED));
+        } else if (cardStr == "DEFEND") {
+            gc.deck.obtainRaw(Card(CardId::DEFEND_RED));
+        } else if (cardStr == "BASH") {
+            gc.deck.obtainRaw(Card(CardId::BASH));
+        }
+    }
+    
+    return gc;
+}
+
 inline std::vector<GameContext> loadScenariosFromDirectory(const std::string& directoryPath) {
     std::vector<GameContext> gameContexts;
     
@@ -65,7 +106,16 @@ inline std::vector<GameContext> loadScenariosFromDirectory(const std::string& di
                     nlohmann::json scenario;
                     file >> scenario;
                     
-                    GameContext gc = createGameContextFromScenario(scenario);
+                    std::cout << "scenario: " << scenario << std::endl;
+
+                    // Generate a seed based on scenario name hash or use a default
+                    std::uint64_t seed = 12345;
+                    if (scenario.contains("name")) {
+                        std::string name = scenario["name"];
+                        seed = std::hash<std::string>{}(name);
+                    }
+                    GameContext gc = createGameContextFromScenario(scenario, seed);
+                    std::cout << "----------------ASCENSION: " << gc.ascension << std::endl;
                     gameContexts.push_back(gc);
                 }
             }
@@ -80,13 +130,6 @@ inline std::vector<GameContext> loadScenariosFromDirectory(const std::string& di
 
 // Snapshot formatting helper functions
 
-inline std::string getMonsterName(MonsterId id) {
-    switch (id) {
-        case MonsterId::CULTIST: return "Cultist";
-        case MonsterId::JAW_WORM: return "Jaw Worm";
-        default: return "Unknown";
-    }
-}
 
 inline bool isAttackCard(CardId id) {
     return id == CardId::STRIKE_RED || id == CardId::BASH ||
@@ -98,13 +141,14 @@ inline bool isDefendCard(CardId id) {
            id == CardId::DEFEND_BLUE || id == CardId::DEFEND_PURPLE;
 }
 
-inline std::string formatBattleSnapshot(const GameContext& gc, const BattleContext& initialBc, const BattleContext& finalBc, const std::string& scenarioName = "Agent Battle") {
+inline std::string formatBattleSnapshot(const GameContext& gc, const BattleContext& initialBc, const BattleContext& finalBc, const std::string& scenarioName = "Agent Battle", const std::string& agentName = "Unknown") {
     std::stringstream snapshot;
     
     // Header
     snapshot << "=== COMBAT: \"" << scenarioName << "\" ===" << std::endl;
+    snapshot << "Agent: " << agentName << std::endl;
     snapshot << "Seed: " << gc.seed << " | Ascension: " << gc.ascension 
-             << " | Floor: 1" << std::endl << std::endl;
+             << " | Floor: " << gc.floorNum << std::endl << std::endl;
     
     // Initial State
     snapshot << "Initial State:" << std::endl;
@@ -114,7 +158,7 @@ inline std::string formatBattleSnapshot(const GameContext& gc, const BattleConte
     // Format monster
     if (initialBc.monsters.monsterCount > 0) {
         const auto& monster = initialBc.monsters.arr[0];
-        snapshot << "  Enemy: " << getMonsterName(monster.id) 
+        snapshot << "  Enemy: " << monsterEncounterStrings[static_cast<int>(gc.info.encounter)]
                  << " (" << monster.curHp << " HP)";
         snapshot << std::endl;
     }

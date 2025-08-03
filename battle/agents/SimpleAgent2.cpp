@@ -3,17 +3,17 @@
 //
 
 #include <algorithm>
-#include <SimpleAgent2.h>
-#include <Game2.h>
-#include "BattleContext2.h"
-#include "GameContext2.h"
-#include "BattleSimulator2.h"
-#include "combat/CardInstance.h"
-#include "constants/CharacterClasses.h"
-#include "constants/MonsterEncounters.h"
-#include "game/Card.h"
-#include "sim/PrintHelpers.h"
-#include "Action2.h"
+#include "SimpleAgent2.h"
+#include "../Game2.h"
+#include "../BattleContext2.h"
+#include "../GameContext2.h"
+#include "../BattleSimulator2.h"
+#include "../../include/combat/CardInstance.h"
+#include "../../include/constants/CharacterClasses.h"
+#include "../../include/constants/MonsterEncounters.h"
+#include "../../include/game/Card.h"
+#include "../../include/sim/PrintHelpers.h"
+#include "../Action2.h"
 
 
 #include <map>

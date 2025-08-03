@@ -3,9 +3,10 @@
 
 #include "../battle/BattleContext2.h"
 #include "../battle/GameContext2.h"
-#include "../battle/SimpleAgent2.h"
-#include "../battle/AutoClad.h"
+#include "../battle/agents/SimpleAgent2.h"
+#include "../battle/agents/AutoClad.h"
 #include "../include/utils/scenarios.h"
+#include "../include/constants/MonsterEncounters.h"
 
 using namespace sts;
 
@@ -13,6 +14,17 @@ enum class Agent {
   simple,
   autoclad,
 };
+
+std::string getAgentName(Agent a) {
+    switch (a) {
+        case Agent::simple:
+            return "SimpleAgent";
+        case Agent::autoclad:
+            return "AutoClad";
+        default:
+            return "Unknown";
+    }
+}
 
 void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = true, bool generateSnapshot = false, const std::string& snapshotDir = "") {
     std::cout << "Running agent on scenario with seed: " << gc.seed << std::endl;
@@ -32,11 +44,11 @@ void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = true
     // Create and configure the agent
     // sts::search::SimpleAgent agent;
 
-    agent.print = printDetails;
+    // agent.print = printDetails;
+    agent.print = false;
 
     if (printDetails) {
-        // TODO: print name of agent
-        // std::cout << " AGENT: " << " "
+        std::cout << "  AGENT: " << getAgentName(a) << std::endl;
         std::cout << "  Initial State:" << std::endl;
         std::cout << "    Encounter: " << static_cast<int>(gc.info.encounter) << std::endl;
         std::cout << "    Player HP: " << initialBc.player.curHp << "/" << initialBc.player.maxHp << std::endl;
@@ -66,9 +78,10 @@ void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = true
 
     // Generate snapshot if requested
     if (generateSnapshot && !snapshotDir.empty()) {
-        std::string encounterName = utils::getMonsterName(initialBc.monsters.arr[0].id);
-        std::string scenarioName = "agent_" + encounterName + "_" + std::to_string(gc.seed);
-        std::string snapshot = utils::formatBattleSnapshot(gc, initialBc, finalBc, scenarioName);
+        std::string agentName = getAgentName(a);
+        std::string encounterName = monsterEncounterStrings[static_cast<int>(gc.info.encounter)];
+        std::string scenarioName = agentName + "_vs_" + encounterName + "_" + std::to_string(gc.seed);
+        std::string snapshot = utils::formatBattleSnapshot(gc, initialBc, finalBc, scenarioName, agentName);
 
         std::string filename = scenarioName + ".snap";
         std::string filepath = snapshotDir + "/" + filename;
@@ -82,7 +95,7 @@ void runAgentOnScenario(Agent a, const GameContext& gc, bool printDetails = true
 
 int main(int argc, char* argv[]) {
     bool generateSnapshots = false;
-    std::string snapshotDir = "snapshots/agent_battles";
+    std::string snapshotDir = "data/agent_battles";
 
     // Check for --snapshot flag
     for (int i = 1; i < argc; ++i) {
@@ -96,9 +109,9 @@ int main(int argc, char* argv[]) {
     }
 
     // Load all scenarios from the scenarios directory
-    std::vector<GameContext> scenarios = sts::utils::loadScenariosFromDirectory("tests/scenarios/");
+    std::vector<GameContext> scenarios = sts::utils::loadScenariosFromDirectory("battle/scenarios/");
 
-    std::cout << "Loaded " << scenarios.size() << " scenarios" << std::endl;
+    // std::cout << "Loaded " << scenarios.size() << " scenarios" << std::endl;
     if (generateSnapshots) {
         std::cout << "Snapshots will be written to: " << snapshotDir << std::endl;
     }
@@ -106,7 +119,7 @@ int main(int argc, char* argv[]) {
 
     // Run SimpleAgent on each scenario
     for (const auto& gc : scenarios) {
-        runAgentOnScenario(Agent::autoclad, gc, true, generateSnapshots, snapshotDir);
+        runAgentOnScenario(Agent::simple, gc, true, generateSnapshots, snapshotDir);
     }
 
     std::cout << "All scenarios completed!" << std::endl;

@@ -753,6 +753,13 @@ void BattleContext::playCardQueueItem(CardQueueItem playItem) {
     // if c is null callEndOfTurnActions()
     // if cardQueueSize is 1 and carditem is endTurnAutoplay diable unceasing top
 
+    // Validation check: skip invalid CardQueueItems
+    if (playItem.card.getId() == CardId::INVALID) {
+        std::cerr << "WARNING: Skipping invalid CardQueueItem with INVALID card (UniqueId: "
+                  << playItem.card.uniqueId << ")" << std::endl;
+        return; // Skip processing this invalid item
+    }
+
     curCardQueueItem = playItem;
     auto &item = curCardQueueItem;
     auto &c = item.card;

@@ -1,15 +1,15 @@
 === COMBAT: "SimpleAgent_vs_Red Slaver_8520346952809926872" ===
 Agent: SimpleAgent
-Seed: 8520346952809926872 | Ascension: 20 | Floor: 0
+Seed: 8520346952809926872 | Ascension: 20 | Floor: 11
 
 Initial State:
   Player: 56/75 HP, 3 Energy
   Enemy: Red Slaver (51 HP)
-  Hand: Shrug It Off(1), Defend(1), Strike(1), Strike(1), Defend(1)
+  Hand: Feel No Pain(1), Ascender's Bane(-3), Defend(1), Bash(2), Spot Weakness(1)
   Deck: 10 cards remaining
 
 Final Result:
   Outcome: PLAYER_VICTORY
-  Player HP: 43/75
-  Turns: 4
-  RNG Counters: shuffle=3, cardRandom=0, misc=0
+  Player HP: 24/75
+  Turns: 7
+  RNG Counters: shuffle=4, cardRandom=0, misc=0

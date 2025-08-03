@@ -1,11 +1,11 @@
 === COMBAT: "SimpleAgent_vs_Gremlin Nob_7244678248054073170" ===
 Agent: SimpleAgent
-Seed: 7244678248054073170 | Ascension: 20 | Floor: 0
+Seed: 7244678248054073170 | Ascension: 20 | Floor: 13
 
 Initial State:
   Player: 60/75 HP, 3 Energy
-  Enemy: Gremlin Nob (89 HP)
-  Hand: Strike(1), Defend(1), Strike(1), Ascender's Bane(-3), Shrug It Off(1)
+  Enemy: Gremlin Nob (90 HP)
+  Hand: Bash(2), Shrug It Off(1), Strike(1), Strike(1), Strike(1)
   Deck: 12 cards remaining
 
 Final Result:

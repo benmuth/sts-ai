@@ -91,6 +91,8 @@ inline GameContext createGameContextFromScenario(const nlohmann::json& scenario,
 
     GameContext gc(CharacterClass::IRONCLAD, seed, ascension);
 
+    gc.floorNum = scenario["floor"];
+
     // Set player stats
     gc.curHp = scenario["initial_state"]["player_hp"];
     gc.maxHp = scenario["initial_state"]["player_max_hp"];

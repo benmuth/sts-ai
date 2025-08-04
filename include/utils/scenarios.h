@@ -9,6 +9,7 @@
 #include "../battle/BattleContext2.h"
 #include "../constants/MonsterEncounters.h"
 #include "../constants/Cards.h"
+#include "../constants/Relics.h"
 #include "../json/single_include/nlohmann/json.hpp"
 
 namespace sts {
@@ -25,6 +26,18 @@ inline CardId getCardIdFromName(const std::string& cardName) {
         }
     }
     return CardId::INVALID;
+}
+
+// Helper function to convert relic name string to RelicId
+inline RelicId getRelicIdFromName(const std::string& relicName) {
+    // Linear search through relicEnumNames array
+    constexpr int numRelics = sizeof(relicEnumNames) / sizeof(relicEnumNames[0]);
+    for (int i = 0; i < numRelics; ++i) {
+        if (relicName == relicEnumNames[i]) {
+            return static_cast<RelicId>(i);
+        }
+    }
+    return RelicId::INVALID;
 }
 
 inline GameContext createGameContextFromScenario(const nlohmann::json& scenario) {
@@ -79,6 +92,18 @@ inline GameContext createGameContextFromScenario(const nlohmann::json& scenario)
                 card.upgrade();
             }
             gc.deck.obtainRaw(card);
+        }
+    }
+
+    // Process relics if they exist in the scenario
+    if (scenario["initial_state"].contains("relics")) {
+        for (const auto& relicStr : scenario["initial_state"]["relics"]) {
+            std::string relicName = relicStr;
+            RelicId relicId = getRelicIdFromName(relicName);
+            if (relicId != RelicId::INVALID) {
+                RelicInstance relic{relicId, 0};
+                gc.relics.add(relic);
+            }
         }
     }
 
@@ -139,6 +164,18 @@ inline GameContext createGameContextFromScenario(const nlohmann::json& scenario,
                 card.upgrade();
             }
             gc.deck.obtainRaw(card);
+        }
+    }
+
+    // Process relics if they exist in the scenario
+    if (scenario["initial_state"].contains("relics")) {
+        for (const auto& relicStr : scenario["initial_state"]["relics"]) {
+            std::string relicName = relicStr;
+            RelicId relicId = getRelicIdFromName(relicName);
+            if (relicId != RelicId::INVALID) {
+                RelicInstance relic{relicId, 0};
+                gc.relics.add(relic);
+            }
         }
     }
 

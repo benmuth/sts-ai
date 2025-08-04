@@ -754,6 +754,10 @@ void BattleContext::playCardQueueItem(CardQueueItem playItem) {
     // if cardQueueSize is 1 and carditem is endTurnAutoplay diable unceasing top
 
     // Validation check: skip invalid CardQueueItems
+    // TODO: figure out what to do here.
+    //  if we don't return here it triggers an assertion in the hexaghost fight because an invalid card is discarded
+    // Also, I suspect returning here is causing some end of turn effects like Stone Calendar to
+    // not be triggered
     if (playItem.card.getId() == CardId::INVALID) {
         std::cerr << "WARNING: Skipping invalid CardQueueItem with INVALID card (UniqueId: "
                   << playItem.card.uniqueId << ")" << std::endl;

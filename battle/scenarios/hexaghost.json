@@ -37,6 +37,9 @@
     "potions": [
       "SWIFT_POTION",
       "LIQUID_BRONZE"
-    ]
+    ],
+    "relic_counters": {
+      "HAPPY_FLOWER": 1
+    }
   }
 }

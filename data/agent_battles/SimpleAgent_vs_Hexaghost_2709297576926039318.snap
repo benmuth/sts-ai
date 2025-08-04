@@ -7,9 +7,11 @@ Initial State:
   Enemy: Hexaghost (264 HP)
   Hand: Defend(1), Whirlwind(-1), Shockwave(2), Spot Weakness(1), Anger(0)
   Deck: 12 cards remaining
+  Relics: Blue Candle, Frozen Eye, Happy Flower(2), Stone Calendar, Burning Blood, Symbiotic Virus, Membership Card
 
 Final Result:
-  Outcome: PLAYER_VICTORY
-  Player HP: 2/75
+  Outcome: PLAYER_LOSS
+  Player HP: 0/75
+  Relics: Blue Candle, Frozen Eye, Happy Flower(1), Stone Calendar, Burning Blood, Symbiotic Virus, Membership Card
   Turns: 8
   RNG Counters: shuffle=3, cardRandom=0, misc=0

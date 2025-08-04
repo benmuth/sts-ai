@@ -21,7 +21,10 @@
       "STRIKE",
       "ASCENDERS_BANE"
     ],
-    "relics": ["POTION_BELT"],
+    "relics": [
+      "BURNING_BLOOD",
+      "POTION_BELT"
+    ],
     "potions": []
   }
 }

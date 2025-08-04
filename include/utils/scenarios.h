@@ -40,6 +40,68 @@ inline RelicId getRelicIdFromName(const std::string& relicName) {
     return RelicId::INVALID;
 }
 
+// Helper function to format relics with counters for snapshots
+inline std::string formatRelicsForSnapshot(const Player& player) {
+    std::stringstream relics;
+    bool first = true;
+    for (int i = 0; i < static_cast<int>(RelicId::INVALID); ++i) {
+        RelicId relicId = static_cast<RelicId>(i);
+        if (player.hasRelicRuntime(relicId)) {
+            if (!first) relics << ", ";
+            first = false;
+            relics << getRelicName(relicId);
+
+            // Add counter if it exists and is > 0
+            int counter = 0;
+            switch (relicId) {
+                case RelicId::HAPPY_FLOWER: counter = player.happyFlowerCounter; break;
+                case RelicId::INCENSE_BURNER: counter = player.incenseBurnerCounter; break;
+                case RelicId::INK_BOTTLE: counter = player.inkBottleCounter; break;
+                case RelicId::INSERTER: counter = player.inserterCounter; break;
+                case RelicId::NUNCHAKU: counter = player.nunchakuCounter; break;
+                case RelicId::PEN_NIB: counter = player.penNibCounter; break;
+                case RelicId::SUNDIAL: counter = player.sundialCounter; break;
+                default: counter = 0; break;
+            }
+            if (counter > 0) {
+                relics << "(" << counter << ")";
+            }
+        }
+    }
+    return relics.str();
+}
+
+// Helper function to process relics and relic counters from scenario JSON
+inline void processRelicsFromScenario(GameContext& gc, const nlohmann::json& scenario) {
+    // Process relics if they exist in the scenario
+    if (scenario["initial_state"].contains("relics")) {
+        for (const auto& relicStr : scenario["initial_state"]["relics"]) {
+            std::string relicName = relicStr;
+            RelicId relicId = getRelicIdFromName(relicName);
+            if (relicId != RelicId::INVALID) {
+                RelicInstance relic{relicId, 0};
+                gc.relics.add(relic);
+            }
+        }
+    }
+
+    // Process relic counters if they exist in the scenario
+    if (scenario["initial_state"].contains("relic_counters")) {
+        for (const auto& [relicName, counter] : scenario["initial_state"]["relic_counters"].items()) {
+            RelicId relicId = getRelicIdFromName(relicName);
+            if (relicId != RelicId::INVALID && gc.relics.has(relicId)) {
+                // Find and update the counter for this relic
+                for (auto& relic : gc.relics.relics) {
+                    if (relic.id == relicId) {
+                        relic.data = counter.get<int>();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
 inline GameContext createGameContextFromScenario(const nlohmann::json& scenario) {
     auto seed = scenario["seed"].get<std::uint64_t>();
     auto ascension = scenario["ascension"].get<int>();
@@ -95,17 +157,8 @@ inline GameContext createGameContextFromScenario(const nlohmann::json& scenario)
         }
     }
 
-    // Process relics if they exist in the scenario
-    if (scenario["initial_state"].contains("relics")) {
-        for (const auto& relicStr : scenario["initial_state"]["relics"]) {
-            std::string relicName = relicStr;
-            RelicId relicId = getRelicIdFromName(relicName);
-            if (relicId != RelicId::INVALID) {
-                RelicInstance relic{relicId, 0};
-                gc.relics.add(relic);
-            }
-        }
-    }
+    // Process relics and relic counters
+    processRelicsFromScenario(gc, scenario);
 
     return gc;
 }
@@ -167,17 +220,8 @@ inline GameContext createGameContextFromScenario(const nlohmann::json& scenario,
         }
     }
 
-    // Process relics if they exist in the scenario
-    if (scenario["initial_state"].contains("relics")) {
-        for (const auto& relicStr : scenario["initial_state"]["relics"]) {
-            std::string relicName = relicStr;
-            RelicId relicId = getRelicIdFromName(relicName);
-            if (relicId != RelicId::INVALID) {
-                RelicInstance relic{relicId, 0};
-                gc.relics.add(relic);
-            }
-        }
-    }
+    // Process relics and relic counters
+    processRelicsFromScenario(gc, scenario);
 
     return gc;
 }
@@ -256,6 +300,10 @@ inline std::string formatBattleSnapshot(const GameContext& gc, const BattleConte
     snapshot << std::endl;
 
     snapshot << "  Deck: " << initialBc.cards.drawPile.size() << " cards remaining" << std::endl;
+
+    // Format relics
+    snapshot << "  Relics: " << formatRelicsForSnapshot(initialBc.player) << std::endl;
+
     snapshot << std::endl;
 
     // Final Result
@@ -274,6 +322,7 @@ inline std::string formatBattleSnapshot(const GameContext& gc, const BattleConte
     }
 
     snapshot << "  Player HP: " << finalBc.player.curHp << "/" << finalBc.player.maxHp << std::endl;
+    snapshot << "  Relics: " << formatRelicsForSnapshot(finalBc.player) << std::endl;
     snapshot << "  Turns: " << finalBc.turn << std::endl;
 
     // RNG counters for determinism verification
